@@ -218,6 +218,7 @@ header
 {
     .navbar_links
     {
+        box-shadow: none;
         position: initial;
         transform: translateX(0);
         opacity: 1;
@@ -226,7 +227,6 @@ header
         justify-content: flex-end;
         align-items: center;
         font-size: 20px;
-        box-shadow: none;
     }
     .navbar_link a
     {
