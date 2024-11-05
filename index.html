@@ -10,7 +10,11 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap" rel="stylesheet">
-        
+        <style>
+            html {
+                scroll-behavior: smooth;
+            }
+        </style>
         <title>Huii's Website</title>
     </head>
     <body>
@@ -26,10 +30,10 @@
                     </div>
                     <!--link-->
                     <ul class="navbar_links">
-                        <li class="navbar_link"><a href="#">Home</a></li>
-                        <li class="navbar_link"><a href="#">About</a></li>
-                        <li class="navbar_link"><a href="#">Skills</a></li>
-                        <li class="navbar_link"><a href="#">Projects</a></li>
+                        <li class="navbar_link"><a href="#home">Home</a></li>
+                        <li class="navbar_link"><a href="#about">About</a></li>
+                        <li class="navbar_link"><a href="#skill">Skills</a></li>
+                        <li class="navbar_link"><a href="#project">Projects</a></li>
                         <li class="navbar_link"><a href="#footer">Contact</a></li>
                     </ul>
                     <!--menu button-->
@@ -43,7 +47,7 @@
             <div class="container">
                 <div class="home_item">
                     <div class="home_img">
-                        <img src="./img/img.png" alt="">
+                        <img src="./img/monitor.png" alt="">
                     </div>
                     <div class="home_content">
                         <h1>Hello, I'm Huii</h1>
@@ -63,14 +67,12 @@
             <div class="container">
                 <div class="about_item">
                     <div class="about_img">
-                        <img src="./img/img.png" alt="">
+                        <img src="./img/phone.png" alt="">
                     </div>
                     <div class="about_content">
-                        <h1>About me</h1>
-                        <h3>dev</h3>
+                        <h1>ABOUT ME</h1>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic dolor repellat molestias 
                             corrupti minima sapiente temporibus mollitia nobis sunt exercitationem.</p>
-                        <button class="btn">Read More</button>
                     </div>
                 </div>
                 <hr>
@@ -84,7 +86,7 @@
                         <div class="myskill">
                             <i class="fa-solid fa-code"></i>
                             <h1>Programming Language</h1>
-                            <p> Thành thạo C++ , .Net , Java , ... Viết Các Phần Mềm Tools Auto Tự Động Hóa Công Việc</p>
+                            <p> Thành thạo C++, C#, Java, ... Viết Các Phần Mềm Tools Auto Tự Động Hóa Công Việc</p>
                         </div>
                     </div>
                     <div class="skill_item">
@@ -104,6 +106,35 @@
                 </div>
                 <hr>
             </div>
+        </section>
+        <section id="project">
+            <div class="container">
+                <h1>PROJECTS</h1>
+                <div class="project_item">
+                    <img src="./img/cog.png" alt="">
+                    <div class="project_content">
+                        <h3>Tools Mã Hóa Chuỗi Kí Tự</h3>
+                        <p>Sử Dụng .Net WinForm Tạo Phần Mềm Mã Hóa Và Giải Mã Chuỗi Kí Tự Dựa Trên Các Hệ Mật Mã</p>
+                        <button class="btn">View More</button>
+                    </div>
+                </div>
+                <div class="project_item">
+                    <img src="./img/folder.png" alt="">
+                    <div class="project_content">
+                        <h3>Snake Game</h3>
+                        <p>Sử Dụng Ngôn Ngữ Lập Trình C++ Tạo Trò Chơi Rắn Săn Mồi</p>
+                        <button class="btn">View More</button>
+                    </div>
+                </div>
+                <div class="project_item">
+                    <img src="./img/idea.png" alt="">
+                    <div class="project_content">
+                        <h3>Portfolio Website</h3>
+                        <p>Sử Dụng HTML , CSS , JavaScript Tạo Một Trang Web Portfolio Cá Nhân</p>
+                    </div>
+                </div>
+            </div>
+            <hr>
         </section>
         <script src="https://kit.fontawesome.com/11c15332cd.js" crossorigin="anonymous"></script>
         <script src="./js/main.js"></script>
