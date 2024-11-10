@@ -4,9 +4,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- css -->
         <link rel="stylesheet" href="./css/main.css">
-        <!-- fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap" rel="stylesheet">
@@ -19,24 +17,19 @@
     </head>
     <body>
         <section id="overlay"></section>
-        <!-- header-->
         <header>
             <div class="container">
                 <nav class="navbar">
-                    <!--logo-->
                     <div class="navbar_logo">
-                        <!--<img src="./img/logo.svg" alt="Logo">-->
-                        <h1>Huii.</h1>
+                        <h1>Huii</h1>
                     </div>
-                    <!--link-->
                     <ul class="navbar_links">
                         <li class="navbar_link"><a href="#home">Home</a></li>
                         <li class="navbar_link"><a href="#about">About</a></li>
                         <li class="navbar_link"><a href="#skill">Skills</a></li>
                         <li class="navbar_link"><a href="#project">Projects</a></li>
-                        <li class="navbar_link"><a href="#footer">Contact</a></li>
+                        <li class="navbar_link"><a href="#contact">Contact</a></li>
                     </ul>
-                    <!--menu button-->
                     <div class="navbar_icons">
                         <div class="navbar_icon"></div>
                     </div>
@@ -51,13 +44,16 @@
                     </div>
                     <div class="home_content">
                         <h1>Hello, I'm Huii</h1>
-                        <p>this my website</p>
+                        <p>This My Portfolio Website</p>
                         <div class="home_socials">
-                            <a href="#"><i class="fa-brands fa-facebook"></i></a>
-                            <a href="#"><i class="fa-brands fa-facebook"></i></a>
-                            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                            <a href="https://www.facebook.com/Huii.FB/" target="#blank"><i class="fa-brands fa-facebook"></i></a>
+                            <a href="https://www.facebook.com/messages/t/Huii.FB" target="#blank"><i class="fa-brands fa-facebook-messenger"></i></a>
+                            <a href="https://www.tiktok.com/@huii_tiktok" target="#blank"><i class="fa-brands fa-tiktok"></i></i></a>
+                            <a href="https://github.com/GitHuii" target="#blank"><i class="fa-brands fa-github"></i></a>
                         </div>
-                        <button class="btn">Download CV</button>
+                        <a href="./img/cv.png" download="cv.png">
+                            <button class="btn">Download CV</button>
+                        </a>
                     </div>
                 </div>
                 <hr>
@@ -71,8 +67,8 @@
                     </div>
                     <div class="about_content">
                         <h1>ABOUT ME</h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic dolor repellat molestias 
-                            corrupti minima sapiente temporibus mollitia nobis sunt exercitationem.</p>
+                        <p>I Am A Programmer</p>
+                        <p>I Like Programming And Am Interested In Technology</p>
                     </div>
                 </div>
                 <hr>
@@ -80,7 +76,7 @@
         </section>
         <section id="skill">
             <div class="container">
-                <h1 class ="skill_title">Skills</h1>
+                <h1 class ="skill_title">SKILLS</h1>
                 <div class="skill_content">
                     <div class="skill_item">
                         <div class="myskill">
@@ -111,31 +107,57 @@
             <div class="container">
                 <h1>PROJECTS</h1>
                 <div class="project_item">
-                    <img src="./img/cog.png" alt="">
+                    <img src="./img/lock.png" alt="">
                     <div class="project_content">
                         <h3>Tools Mã Hóa Chuỗi Kí Tự</h3>
                         <p>Sử Dụng .Net WinForm Tạo Phần Mềm Mã Hóa Và Giải Mã Chuỗi Kí Tự Dựa Trên Các Hệ Mật Mã</p>
-                        <button class="btn">View More</button>
+                        <a href="https://github.com/GitHuii/EnCode" target="#blank">
+                            <button class="btn">View More</button>
+                        </a>
+                    </div>
+                </div>
+                <div class="project_item">
+                    <img src="./img/cog.png" alt="">
+                    <div class="project_content">
+                        <h3>Snake Game</h3>
+                        <p>Sử Dụng Ngôn Ngữ Lập Trình C# Và Unity Tạo Trò Chơi Rắn Săn Mồi</p>
+                        <a href="https://github.com/GitHuii/SnakeGame" target="#blank">
+                            <button class="btn">View More</button>
+                        </a>
                     </div>
                 </div>
                 <div class="project_item">
                     <img src="./img/folder.png" alt="">
-                    <div class="project_content">
-                        <h3>Snake Game</h3>
-                        <p>Sử Dụng Ngôn Ngữ Lập Trình C++ Tạo Trò Chơi Rắn Săn Mồi</p>
-                        <button class="btn">View More</button>
-                    </div>
-                </div>
-                <div class="project_item">
-                    <img src="./img/idea.png" alt="">
                     <div class="project_content">
                         <h3>Portfolio Website</h3>
                         <p>Sử Dụng HTML , CSS , JavaScript Tạo Một Trang Web Portfolio Cá Nhân</p>
                     </div>
                 </div>
             </div>
-            <hr>
         </section>
+        <footer id = "contact">
+            <div class="container">
+                <div class="contact_heading">
+                    <h1>CONTACT</h1>
+                </div>
+                <div class="contact_content">
+                    <a href="mailto:nvhuyzxc@gmail.com">
+                        <i class="fas fa-envelope"></i>
+                        <p>nvhuyzxc@gmail.com</p>
+                    </a>
+                    <a href="tel:0333840519">
+                        <i class="fas fa-phone-alt"></i>
+                        <p>0333840519</p>
+                    </a>
+                </div>
+                <div class="home_socials">
+                    <a href="https://www.facebook.com/Huii.FB/" target="#blank"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.facebook.com/messages/t/Huii.FB" target="#blank"><i class="fa-brands fa-facebook-messenger"></i></a>
+                    <a href="https://www.tiktok.com/@huii_tiktok" target="#blank"><i class="fa-brands fa-tiktok"></i></i></a>
+                    <a href="https://github.com/GitHuii" target="#blank"><i class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+        </footer>
         <script src="https://kit.fontawesome.com/11c15332cd.js" crossorigin="anonymous"></script>
         <script src="./js/main.js"></script>
     </body>
