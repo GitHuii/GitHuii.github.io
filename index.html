@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio | Developer</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;700&family=Fira+Code:wght@300;400;500;700&display=swap');
+
         * {
             margin: 0;
             padding: 0;
@@ -12,7 +14,7 @@
         }
 
         body {
-            font-family: 'Courier New', monospace;
+            font-family: 'Roboto Mono', 'Fira Code', 'Courier New', 'Consolas', monospace;
             background: #0a0e27;
             color: #00ff41;
             overflow-x: hidden;
@@ -363,7 +365,6 @@
                 Tôi đam mê phát triển phần mềm với .NET, luôn tìm kiếm cơ hội học hỏi 
                 và áp dụng kiến thức vào các dự án thực tế.
             </p>
-            
             <p style="line-height: 1.8; margin-top: 10px;">
                 Code is poetry, debugging is art.
             </p>
@@ -463,7 +464,7 @@
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             ctx.fillStyle = '#00ff41';
-            ctx.font = fontSize + 'px monospace';
+            ctx.font = fontSize + 'px "Roboto Mono", monospace';
 
             for (let i = 0; i < drops.length; i++) {
                 const text = chars[Math.floor(Math.random() * chars.length)];
