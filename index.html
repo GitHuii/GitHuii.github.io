@@ -1,164 +1,511 @@
 <!DOCTYPE html>
-<html lang="vi" translate="no">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="./css/main.css">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap" rel="stylesheet">
-        <style>
-            html {
-                scroll-behavior: smooth;
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Developer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0e27;
+            color: #00ff41;
+            overflow-x: hidden;
+        }
+
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            padding: 40px 0;
+            text-align: center;
+            animation: fadeInDown 1s ease;
+        }
+
+        .terminal-header {
+            background: #1e1e1e;
+            border: 2px solid #00ff41;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terminal-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.2), transparent);
+            animation: scan 3s infinite;
+        }
+
+        .terminal-controls {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .btn-circle {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .btn-close { background: #ff5f56; }
+        .btn-minimize { background: #ffbd2e; }
+        .btn-maximize { background: #27c93f; }
+
+        h1 {
+            font-size: 2.5em;
+            margin: 10px 0;
+            text-shadow: 0 0 10px #00ff41;
+        }
+
+        .typing-effect {
+            font-size: 1.2em;
+            color: #64ffda;
+            border-right: 2px solid #00ff41;
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+            animation: typing 3.5s steps(40) 1s forwards, blink 0.75s step-end infinite;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        nav a, .project-link {
+            color: #00ff41;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid #00ff41;
+            border-radius: 4px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        
+        .project-link {
+            padding: 8px 16px;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        nav a::before, .project-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #00ff41;
+            transition: left 0.3s;
+            z-index: -1;
+        }
+
+        nav a:hover::before, .project-link:hover::before {
+            left: 0;
+        }
+
+        nav a:hover, .project-link:hover {
+            color: #0a0e27;
+            box-shadow: 0 0 15px #00ff41;
+        }
+
+        section {
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid #00ff41;
+            border-radius: 8px;
+            padding: 30px;
+            margin: 30px 0;
+            animation: fadeInUp 1s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        section h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #64ffda;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        section h2::before {
+            content: '> ';
+            position: absolute;
+            left: 0;
+            animation: blink 1s infinite;
+        }
+
+        .skill-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .skill-item {
+            background: #1e1e1e;
+            padding: 20px;
+            border: 1px solid #00ff41;
+            border-radius: 4px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .skill-item:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 255, 65, 0.4);
+            background: rgba(0, 255, 65, 0.1);
+        }
+
+        .project-card {
+            background: #1e1e1e;
+            border: 1px solid #00ff41;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 65, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-card:hover {
+            transform: translateX(10px);
+            box-shadow: -5px 5px 20px rgba(0, 255, 65, 0.3);
+        }
+
+        .project-card h3 {
+            color: #64ffda;
+            margin-bottom: 10px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            background: #1e1e1e;
+            border: 1px solid #00ff41;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .contact-item:hover {
+            background: rgba(0, 255, 65, 0.1);
+            transform: translateX(10px);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #64ffda;
+        }
+
+        .glitch {
+            position: relative;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0.8;
+        }
+
+        .glitch::before {
+            animation: glitch 0.3s infinite;
+            color: #ff00de;
+            z-index: -1;
+        }
+
+        .glitch::after {
+            animation: glitch 0.3s infinite reverse;
+            color: #00ffff;
+            z-index: -2;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
             }
-        </style>
-        <title>Huii's Website</title>
-    </head>
-    <body>
-        <section id="overlay"></section>
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        @keyframes scan {
+            to { left: 100%; }
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8em; }
+            nav { flex-direction: column; align-items: center; }
+            .skill-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+    <canvas class="matrix-bg" id="matrix"></canvas>
+    
+    <div class="container">
         <header>
-            <div class="container">
-                <nav class="navbar">
-                    <div class="navbar_logo">
-                        <h1>Huii</h1>
-                    </div>
-                    <ul class="navbar_links">
-                        <li class="navbar_link"><a href="#home">Home</a></li>
-                        <li class="navbar_link"><a href="#about">About</a></li>
-                        <li class="navbar_link"><a href="#skill">Skills</a></li>
-                        <li class="navbar_link"><a href="#project">Projects</a></li>
-                        <li class="navbar_link"><a href="#contact">Contact</a></li>
-                    </ul>
-                    <div class="navbar_icons">
-                        <div class="navbar_icon"></div>
-                    </div>
-                </nav>
+            <div class="terminal-header">
+                <div class="terminal-controls">
+                    <span class="btn-circle btn-close"></span>
+                    <span class="btn-circle btn-minimize"></span>
+                    <span class="btn-circle btn-maximize"></span>
+                </div>
+                <h1 class="glitch" data-text="$ whoami">$ whoami</h1>
+                <p style="margin-top: 10px; color: #64ffda;">Nguyễn Viết Huy</p>
+                <p class="typing-effect" id="typing-text"></p>
             </div>
         </header>
-        <section id="home">
-            <div class="container">
-                <div class="home_item">
-                    <div class="home_img">
-                        <img src="./img/monitor.png" alt="">
-                    </div>
-                    <div class="home_content">
-                        <h1>Hello, I'm Huii</h1>
-                        <p>This My Portfolio Website</p>
-                        <div class="home_socials">
-                            <a href="https://www.facebook.com/Huii.FB/" target="#blank"><i class="fa-brands fa-facebook"></i></a>
-                            <a href="https://www.facebook.com/messages/t/Huii.FB" target="#blank"><i class="fa-brands fa-facebook-messenger"></i></a>
-                            <a href="https://www.tiktok.com/@huii_tiktok" target="#blank"><i class="fa-brands fa-tiktok"></i></i></a>
-                            <a href="https://github.com/GitHuii" target="#blank"><i class="fa-brands fa-github"></i></a>
-                        </div>
-                        <a href="./img/cv.png" download="cv.png">
-                            <button class="btn">Download CV</button>
-                        </a>
-                    </div>
-                </div>
-                <hr>
-            </div>
-        </section>
+
+        <nav>
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
         <section id="about">
-            <div class="container">
-                <div class="about_item">
-                    <div class="about_img">
-                        <img src="./img/phone.png" alt="">
-                    </div>
-                    <div class="about_content">
-                        <h1>ABOUT ME</h1>
-                        <p>I Am A Programmer</p>
-                        <p>I Like Programming And Am Interested In Technology</p>
-                    </div>
-                </div>
-                <hr>
+            <h2>About Me</h2>
+            <p style="line-height: 1.8;">
+                Xin chào! Tôi là Nguyễn Viết Huy, sinh viên năm cuối ngành Công nghệ Thông tin 
+                tại Trường Đại Học Kinh Tế - Kỹ Thuật Công Nghiệp. 
+                Tôi đam mê phát triển phần mềm với .NET, luôn tìm kiếm cơ hội học hỏi 
+                và áp dụng kiến thức vào các dự án thực tế.
+            </p>
+            
+            <p style="line-height: 1.8; margin-top: 10px;">
+                Code is poetry, debugging is art.
+            </p>
+        </section>
+
+        <section id="skills">
+            <h2>Technical Skills</h2>
+            <div class="skill-grid">
+                <div class="skill-item">C#</div>
+                <div class="skill-item">WinForms</div>
+                <div class="skill-item">ASP.NET Core</div>
+                <div class="skill-item">Entity Framework</div>
+                <div class="skill-item">SQL Server</div>
+                <div class="skill-item">MySQL</div>
+                <div class="skill-item">Java</div>
+                <div class="skill-item">C++</div>
+                <div class="skill-item">Git & GitHub</div>
             </div>
         </section>
-        <section id="skill">
-            <div class="container">
-                <h1 class ="skill_title">SKILLS</h1>
-                <div class="skill_content">
-                    <div class="skill_item">
-                        <div class="myskill">
-                            <i class="fa-solid fa-code"></i>
-                            <h1>Programming Language</h1>
-                            <p> Thành thạo C++, C#, Java, ... Viết Các Phần Mềm Tools Auto Tự Động Hóa Công Việc</p>
-                        </div>
-                    </div>
-                    <div class="skill_item">
-                        <div class="myskill">
-                            <i class="fa-solid fa-language"></i>
-                            <h1>Foreign Fanguage</h1>
-                            <p> Có khả năng giao tiếp cơ bản Tiếng Anh </p>
-                        </div>
-                    </div>
-                    <div class="skill_item">
-                        <div class="myskill">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i>
-                            <h1>Design</h1>
-                            <p> Thiết kế đồ họa , kĩ năng sử dụng Adobe Photoshop , Blender</p>
-                        </div>
-                    </div>
-                </div>
-                <hr>
+
+        <section id="projects">
+            <h2>Featured Projects</h2>
+            
+            <div class="project-card">
+                <h3>📚 Quản Lý Thư Viện</h3>
+                <p>Hệ thống quản lý sách, độc giả và mượn/trả. Thao tác dữ liệu bằng Entity Framework Core, hỗ trợ CRUD đầy đủ cho nghiệp vụ.</p>
+                <p style="margin-top: 10px; color: #64ffda;">Tech: WinForms C#, EF Core | 04/2025 - 06/2025</p>
+                <a href="https://github.com/GitHuii/LibraryManager" target="_blank" class="project-link">→ View on GitHub</a>
+            </div>
+
+            <div class="project-card">
+                <h3>🛒 Quản Lý Bán Hàng (HTNLShop)</h3>
+                <p>Website bán hàng với chức năng xem sản phẩm, giỏ hàng, đặt hàng cho người dùng. Quản trị viên có thể CRUD sản phẩm và đơn hàng.</p>
+                <p style="margin-top: 10px; color: #64ffda;">Tech: ASP.NET Core, EF Core | 10/2025 - 11/2025</p>
+                <a href="https://github.com/GitHuii/HTNLShop" target="_blank" class="project-link">→ View on GitHub</a>
+            </div>
+
+            <div class="project-card">
+                <h3>🎓 Quản Lý Khóa Học Trực Tuyến (HTNL.Edu)</h3>
+                <p>Nền tảng cung cấp khóa học miễn phí, người dùng theo dõi tiến độ học tập. Quản trị viên quản lý khóa học và bài học qua CRUD.</p>
+                <p style="margin-top: 10px; color: #64ffda;">Tech: ASP.NET Core, EF Core | 11/2025 - 12/2025</p>
+                <a href="https://github.com/GitHuii/HTNL.Edu" target="_blank" class="project-link">→ View on GitHub</a>
             </div>
         </section>
-        <section id="project">
-            <div class="container">
-                <h1>PROJECTS</h1>
-                <div class="project_item">
-                    <img src="./img/lock.png" alt="">
-                    <div class="project_content">
-                        <h3>Tools Mã Hóa Chuỗi Kí Tự</h3>
-                        <p>Sử Dụng .Net WinForm Tạo Phần Mềm Mã Hóa Và Giải Mã Chuỗi Kí Tự Dựa Trên Các Hệ Mật Mã</p>
-                        <a href="https://github.com/GitHuii/EnCode" target="#blank">
-                            <button class="btn">View More</button>
-                        </a>
-                    </div>
+
+        <section id="contact">
+            <h2>Get In Touch</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span>📧</span>
+                    <span>nvhuyzxc@gmail.com</span>
                 </div>
-                <div class="project_item">
-                    <img src="./img/cog.png" alt="">
-                    <div class="project_content">
-                        <h3>Snake Game</h3>
-                        <p>Sử Dụng Ngôn Ngữ Lập Trình C# Và Unity Tạo Trò Chơi Rắn Săn Mồi</p>
-                        <a href="https://github.com/GitHuii/SnakeGame" target="#blank">
-                            <button class="btn">View More</button>
-                        </a>
-                    </div>
+                <div class="contact-item">
+                    <span>📱</span>
+                    <span>0333 840 519</span>
                 </div>
-                <div class="project_item">
-                    <img src="./img/folder.png" alt="">
-                    <div class="project_content">
-                        <h3>Portfolio Website</h3>
-                        <p>Sử Dụng HTML , CSS , JavaScript Tạo Một Trang Web Portfolio Cá Nhân</p>
-                    </div>
+                <div class="contact-item">
+                    <span>🐙</span>
+                    <span><a href="https://github.com/GitHuii" target="_blank" style="color: #00ff41; text-decoration: none; border-bottom: 1px dashed #00ff41;">github.com/GitHuii</a></span>
+                </div>
+                <div class="contact-item">
+                    <span>🌐</span>
+                    <span><a href="https://huii.id.vn" target="_blank" style="color: #00ff41; text-decoration: none; border-bottom: 1px dashed #00ff41;">huii.id.vn</a></span>
+                </div>
+                <div class="contact-item">
+                    <span>📍</span>
+                    <span>Bạch Mai, Hai Bà Trưng, Hà Nội</span>
                 </div>
             </div>
         </section>
-        <footer id = "contact">
-            <div class="container">
-                <div class="contact_heading">
-                    <h1>CONTACT</h1>
-                </div>
-                <div class="contact_content">
-                    <a href="mailto:nvhuyzxc@gmail.com">
-                        <i class="fas fa-envelope"></i>
-                        <p>nvhuyzxc@gmail.com</p>
-                    </a>
-                    <a href="tel:0333840519">
-                        <i class="fas fa-phone-alt"></i>
-                        <p>0333840519</p>
-                    </a>
-                </div>
-                <div class="home_socials">
-                    <a href="https://www.facebook.com/Huii.FB/" target="#blank"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="https://www.facebook.com/messages/t/Huii.FB" target="#blank"><i class="fa-brands fa-facebook-messenger"></i></a>
-                    <a href="https://www.tiktok.com/@huii_tiktok" target="#blank"><i class="fa-brands fa-tiktok"></i></i></a>
-                    <a href="https://github.com/GitHuii" target="#blank"><i class="fa-brands fa-github"></i></a>
-                </div>
-            </div>
+
+        <footer>
+            <p>© 2024 | Crafted with 💚 and ☕</p>
+            <p style="margin-top: 10px;">while(alive) { eat(); code(); sleep(); }</p>
         </footer>
-        <script src="https://kit.fontawesome.com/11c15332cd.js" crossorigin="anonymous"></script>
-        <script src="./js/main.js"></script>
-    </body>
+    </div>
+
+    <script>
+        // Matrix background effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+
+        for (let i = 0; i < columns; i++) {
+            drops[i] = Math.random() * -100;
+        }
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10, 14, 39, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00ff41';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 33);
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Typing effect
+        const text = ".NET Developer | C# Enthusiast | Student";
+        const typingElement = document.getElementById('typing-text');
+        let i = 0;
+
+        function typeWriter() {
+            if (i < text.length) {
+                typingElement.textContent += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100);
+            }
+        }
+
+        setTimeout(typeWriter, 1500);
+
+        // Smooth scroll
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    </script>
+</body>
 </html>
