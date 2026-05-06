@@ -26,10 +26,10 @@
         <div class="stat-num">5</div>
         <div class="stat-label">Chương</div>
       </div>
-      <!-- <div class="stat-card">
+      <div class="stat-card">
         <div class="stat-num">3</div>
         <div class="stat-label">Độ khó</div>
-      </div> -->
+      </div>
       <div class="stat-card">
         <div class="stat-num">10</div>
         <div class="stat-label">Thang điểm</div>
@@ -86,6 +86,13 @@
       <span id="timer-text">60:00</span>
     </div>
     <button class="btn-submit" id="btn-submit" onclick="confirmSubmit()">Nộp bài</button>
+    <button class="btn-nav-drawer" id="btn-nav-drawer" onclick="openNavDrawer()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+      <span class="drawer-count" id="drawer-answered-count">0</span>
+    </button>
   </header>
 
   <div class="quiz-body">
@@ -210,6 +217,49 @@
         </svg>
         Trang chủ
       </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MOBILE NAV DRAWER ===== -->
+<div class="nav-drawer-overlay" id="nav-drawer-overlay" onclick="closeNavDrawer()"></div>
+<div class="nav-drawer" id="nav-drawer">
+  <div class="nav-drawer-handle" onclick="closeNavDrawer()">
+    <div class="nav-drawer-handle-bar"></div>
+  </div>
+  <div class="nav-drawer-header">
+    <div class="nav-drawer-title">Danh sách câu hỏi</div>
+    <button class="nav-drawer-close" onclick="closeNavDrawer()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+  <div class="nav-drawer-body">
+    <div class="nav-drawer-legend nav-legend">
+      <div class="nav-legend-item"><div class="nav-dot current"></div><span>Hiện tại</span></div>
+      <div class="nav-legend-item"><div class="nav-dot answered"></div><span>Đã trả lời</span></div>
+      <div class="nav-legend-item"><div class="nav-dot marked"></div><span>Đánh dấu</span></div>
+      <div class="nav-legend-item"><div class="nav-dot unanswered"></div><span>Chưa làm</span></div>
+    </div>
+    <div id="nav-chapters-drawer"></div>
+  </div>
+  <div class="nav-drawer-summary nav-summary">
+    <div class="summary-item">
+      <div class="summary-num answered" id="sum-answered-drawer">0</div>
+      <div class="summary-label">Đã trả lời</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-num unanswered" id="sum-unanswered-drawer">40</div>
+      <div class="summary-label">Chưa làm</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-num marked" id="sum-marked-drawer">0</div>
+      <div class="summary-label">Đánh dấu</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-num" style="color:var(--text-muted)" id="sum-remain-drawer">--:--</div>
+      <div class="summary-label">Thời gian</div>
     </div>
   </div>
 </div>
