@@ -652,3 +652,161 @@ body {
   .q-nav { margin-top: 1.2rem; padding-top: 1rem; }
   .btn-nav { padding: 0.55rem 1rem; font-size: 0.78rem; }
 }
+
+/* ===== PRACTICE MODE ===== */
+#practice-screen,
+#practice-complete-screen {
+  display: none;
+}
+
+/* Practice header info area */
+.practice-header-info {
+  flex: 1; display: flex; align-items: center; min-width: 0;
+}
+
+.practice-queue-info {
+  display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+}
+
+.practice-queue-badge,
+.practice-correct-badge,
+.practice-wrong-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 0.72rem; font-weight: 700;
+  padding: 3px 10px; border-radius: 100px;
+  border: 1px solid; white-space: nowrap;
+}
+
+.practice-queue-badge {
+  color: var(--accent); border-color: rgba(9,105,218,0.3);
+  background: rgba(9,105,218,0.08);
+}
+
+.practice-correct-badge {
+  color: var(--green); border-color: rgba(26,127,55,0.3);
+  background: rgba(26,127,55,0.08);
+}
+
+.practice-wrong-badge {
+  color: var(--red); border-color: rgba(209,36,47,0.3);
+  background: rgba(209,36,47,0.08);
+}
+
+.btn-exit-practice {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--surface2); color: var(--text-muted);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 0.45rem 0.9rem; font-size: 0.78rem; font-weight: 700;
+  font-family: 'Be Vietnam Pro', sans-serif; cursor: pointer;
+  transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
+}
+.btn-exit-practice:hover { border-color: var(--red); color: var(--red); }
+
+/* Practice progress bar at top of body */
+.practice-body {
+  max-width: 860px; margin: 0 auto; padding: 0;
+}
+
+.practice-progress-bar-wrap {
+  height: 4px; background: var(--surface3);
+  position: sticky; top: 57px; z-index: 10;
+}
+
+.practice-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green), #56d364);
+  border-radius: 0 2px 2px 0;
+  transition: width 0.5s ease;
+}
+
+/* Practice panel */
+.practice-panel {
+  padding: 2rem 2rem 2.5rem;
+  animation: fadeIn 0.25s ease;
+}
+
+/* Round badge */
+.practice-round-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 0.68rem; font-weight: 700;
+  padding: 2px 8px; border-radius: 4px;
+  background: var(--yellow-glow); color: var(--yellow);
+  border: 1px solid rgba(154,103,0,0.3);
+}
+
+/* Feedback block */
+.practice-feedback {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 0.6rem;
+  margin-top: 1.8rem; padding: 1.2rem 1.5rem;
+  border-radius: 12px; border: 1px solid;
+  animation: fadeIn 0.2s ease;
+}
+
+.practice-feedback.feedback-correct {
+  background: var(--green-glow);
+  border-color: rgba(26,127,55,0.4);
+}
+
+.practice-feedback.feedback-wrong {
+  background: var(--red-glow);
+  border-color: rgba(209,36,47,0.4);
+}
+
+.feedback-icon {
+  display: flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; border-radius: 50%;
+}
+
+.feedback-correct .feedback-icon {
+  background: var(--green); color: #fff;
+}
+
+.feedback-wrong .feedback-icon {
+  background: var(--red); color: #fff;
+}
+
+.feedback-msg {
+  font-size: 1.05rem; font-weight: 700; color: var(--text);
+}
+
+.btn-next-practice {
+  margin-top: 0.4rem;
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent); color: #fff;
+  border: none; border-radius: 10px;
+  padding: 0.7rem 1.6rem;
+  font-size: 0.9rem; font-weight: 700;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  cursor: pointer; transition: all 0.2s;
+  align-self: flex-end;
+}
+.btn-next-practice:hover { background: #0550ae; transform: translateY(-1px); }
+
+/* Intro mode row — 3 buttons */
+.btn-mode-practice {
+  background: linear-gradient(135deg, #1a7f37 0%, #2da44e 100%);
+  color: #ffffff;
+  box-shadow: 0 0 0 0 rgba(45,164,78,0.4);
+}
+.btn-mode-practice:hover {
+  background: linear-gradient(135deg, #116329 0%, #1a7f37 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(26,127,55,0.3);
+}
+.btn-mode-practice .btn-mode-info { color: rgba(255,255,255,0.75); }
+
+/* Quiz logo hover hint */
+.quiz-logo:hover { opacity: 0.7; }
+.quiz-logo { transition: opacity 0.15s; }
+
+/* Mobile practice tweaks */
+@media (max-width: 768px) {
+  .practice-panel { padding: 1.2rem 1rem 2rem; }
+  .practice-queue-info { gap: 0.35rem; }
+  .practice-queue-badge, .practice-correct-badge, .practice-wrong-badge {
+    font-size: 0.65rem; padding: 2px 7px;
+  }
+  .btn-exit-practice { padding: 0.4rem 0.7rem; font-size: 0.72rem; }
+  .btn-next-practice { align-self: stretch; justify-content: center; }
+  .practice-feedback { padding: 1rem; }
+}

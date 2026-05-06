@@ -45,6 +45,15 @@
     </div>
 
     <div class="mode-row">
+      <button class="btn-mode btn-mode-practice" onclick="startPractice()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+        </svg>
+        <div class="btn-mode-label">
+          <span>Ôn tập</span>
+          <span class="btn-mode-info">150 câu · tự học · hiện đáp án ngay</span>
+        </div>
+      </button>
       <button class="btn-mode btn-mode-primary" onclick="startQuiz()">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
         <div class="btn-mode-label">
@@ -65,10 +74,101 @@
   </div>
 </div>
 
+<!-- ===== PRACTICE SCREEN ===== -->
+<div id="practice-screen">
+  <header class="quiz-header">
+    <div class="quiz-logo" onclick="confirmBackFromPractice()" style="cursor:pointer" title="Về trang chủ">☁ Cloud Quiz</div>
+    <div class="practice-header-info">
+      <div class="practice-queue-info">
+        <span class="practice-queue-badge" id="pq-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+          Còn <span id="pq-remaining">150</span> câu
+        </span>
+        <span class="practice-correct-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Đúng: <span id="pq-correct">0</span>
+        </span>
+        <span class="practice-wrong-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          Sai: <span id="pq-wrong">0</span>
+        </span>
+      </div>
+    </div>
+    <button class="btn-exit-practice" onclick="confirmBackFromPractice()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Trang chủ
+    </button>
+  </header>
+
+  <div class="practice-body">
+    <div class="practice-progress-bar-wrap">
+      <div class="practice-progress-fill" id="practice-progress-fill" style="width:0%"></div>
+    </div>
+
+    <div class="practice-panel" id="practice-panel">
+      <div class="q-meta">
+        <span class="q-num" id="pq-num">Câu 1</span>
+        <span class="q-chapter-badge" id="pq-chapter-badge"></span>
+        <span class="q-diff-badge" id="pq-diff-badge"></span>
+        <span class="practice-round-badge" id="pq-round-badge" style="display:none"></span>
+      </div>
+
+      <div class="question-text" id="pq-text"></div>
+      <div class="answers-list" id="pq-answers"></div>
+
+      <!-- Feedback shown after answer -->
+      <div class="practice-feedback" id="practice-feedback" style="display:none">
+        <div class="feedback-icon" id="feedback-icon"></div>
+        <div class="feedback-msg" id="feedback-msg"></div>
+        <div class="feedback-explain" id="feedback-explain" style="display:none"></div>
+        <button class="btn-next-practice" id="btn-next-practice" onclick="practiceNext()">
+          Câu tiếp theo
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PRACTICE COMPLETE SCREEN ===== -->
+<div id="practice-complete-screen">
+  <div class="result-container">
+    <div class="result-header">
+      <div style="font-size:4rem;margin-bottom:1rem">🎉</div>
+      <div class="result-grade" style="color:var(--green)">Hoàn thành!</div>
+      <div class="result-msg">Bạn đã ôn tập xong toàn bộ <span id="pc-total"></span> câu hỏi</div>
+    </div>
+    <div class="result-stats" style="max-width:500px;margin:0 auto 2rem">
+      <div class="result-stat-card">
+        <div class="result-stat-val" style="color:var(--green)" id="pc-correct">0</div>
+        <div class="result-stat-label">Câu đúng lần đầu</div>
+      </div>
+      <div class="result-stat-card">
+        <div class="result-stat-val" style="color:var(--red)" id="pc-wrong">0</div>
+        <div class="result-stat-label">Câu đã sai (ít nhất 1 lần)</div>
+      </div>
+      <div class="result-stat-card">
+        <div class="result-stat-val" style="color:var(--accent)" id="pc-attempts">0</div>
+        <div class="result-stat-label">Tổng lần trả lời</div>
+      </div>
+    </div>
+    <div class="result-actions">
+      <button class="btn-retry" onclick="startPractice()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        Ôn tập lại
+      </button>
+      <button class="btn-review" onclick="backToIntro()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Trang chủ
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== QUIZ SCREEN ===== -->
 <div id="quiz-screen">
   <header class="quiz-header">
-    <div class="quiz-logo">☁ Cloud Quiz</div>
+    <div class="quiz-logo" onclick="confirmBackFromQuiz()" style="cursor:pointer" title="Về trang chủ">☁ Cloud Quiz</div>
     <span class="quiz-mode-badge" id="quiz-mode-badge"></span>
     <div class="progress-wrap">
       <div class="progress-label">
@@ -96,7 +196,6 @@
   </header>
 
   <div class="quiz-body">
-    <!-- LEFT: Question -->
     <div class="question-panel" id="question-panel">
       <div class="q-meta">
         <span class="q-num" id="q-num">Câu 1 / 40</span>
@@ -121,7 +220,6 @@
       </div>
     </div>
 
-    <!-- RIGHT: Navigation Panel -->
     <div class="nav-panel">
       <div class="nav-panel-title">Danh sách câu hỏi</div>
       <div class="nav-legend">
@@ -132,22 +230,10 @@
       </div>
       <div id="nav-chapters"></div>
       <div class="nav-summary">
-        <div class="summary-item">
-          <div class="summary-num answered" id="sum-answered">0</div>
-          <div class="summary-label">Đã trả lời</div>
-        </div>
-        <div class="summary-item">
-          <div class="summary-num unanswered" id="sum-unanswered">40</div>
-          <div class="summary-label">Chưa làm</div>
-        </div>
-        <div class="summary-item">
-          <div class="summary-num marked" id="sum-marked">0</div>
-          <div class="summary-label">Đánh dấu</div>
-        </div>
-        <div class="summary-item">
-          <div class="summary-num" style="color:var(--text-muted)" id="sum-remain">60:00</div>
-          <div class="summary-label">Thời gian</div>
-        </div>
+        <div class="summary-item"><div class="summary-num answered" id="sum-answered">0</div><div class="summary-label">Đã trả lời</div></div>
+        <div class="summary-item"><div class="summary-num unanswered" id="sum-unanswered">40</div><div class="summary-label">Chưa làm</div></div>
+        <div class="summary-item"><div class="summary-num marked" id="sum-marked">0</div><div class="summary-label">Đánh dấu</div></div>
+        <div class="summary-item"><div class="summary-num" style="color:var(--text-muted)" id="sum-remain">60:00</div><div class="summary-label">Thời gian</div></div>
       </div>
     </div>
   </div>
@@ -174,22 +260,10 @@
     </div>
 
     <div class="result-stats">
-      <div class="result-stat-card">
-        <div class="result-stat-val" style="color:var(--green)" id="rs-correct">0</div>
-        <div class="result-stat-label">Câu đúng</div>
-      </div>
-      <div class="result-stat-card">
-        <div class="result-stat-val" style="color:var(--red)" id="rs-wrong">0</div>
-        <div class="result-stat-label">Câu sai</div>
-      </div>
-      <div class="result-stat-card">
-        <div class="result-stat-val" style="color:var(--text-muted)" id="rs-skip">0</div>
-        <div class="result-stat-label">Bỏ qua</div>
-      </div>
-      <div class="result-stat-card">
-        <div class="result-stat-val" style="color:var(--accent)" id="rs-pct">0%</div>
-        <div class="result-stat-label">Tỉ lệ đúng</div>
-      </div>
+      <div class="result-stat-card"><div class="result-stat-val" style="color:var(--green)" id="rs-correct">0</div><div class="result-stat-label">Câu đúng</div></div>
+      <div class="result-stat-card"><div class="result-stat-val" style="color:var(--red)" id="rs-wrong">0</div><div class="result-stat-label">Câu sai</div></div>
+      <div class="result-stat-card"><div class="result-stat-val" style="color:var(--text-muted)" id="rs-skip">0</div><div class="result-stat-label">Bỏ qua</div></div>
+      <div class="result-stat-card"><div class="result-stat-val" style="color:var(--accent)" id="rs-pct">0%</div><div class="result-stat-label">Tỉ lệ đúng</div></div>
     </div>
 
     <div class="chapter-results">
@@ -199,22 +273,15 @@
 
     <div class="result-actions">
       <button class="btn-retry" onclick="retryQuiz()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
-        </svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
         Làm lại
       </button>
       <button class="btn-review" onclick="showReview()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
-        </svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
         Xem đáp án
       </button>
       <button class="btn-review" onclick="backToIntro()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-          <polyline points="9 22 9 12 15 12 15 22"/>
-        </svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         Trang chủ
       </button>
     </div>
@@ -224,15 +291,11 @@
 <!-- ===== MOBILE NAV DRAWER ===== -->
 <div class="nav-drawer-overlay" id="nav-drawer-overlay" onclick="closeNavDrawer()"></div>
 <div class="nav-drawer" id="nav-drawer">
-  <div class="nav-drawer-handle" onclick="closeNavDrawer()">
-    <div class="nav-drawer-handle-bar"></div>
-  </div>
+  <div class="nav-drawer-handle" onclick="closeNavDrawer()"><div class="nav-drawer-handle-bar"></div></div>
   <div class="nav-drawer-header">
     <div class="nav-drawer-title">Danh sách câu hỏi</div>
     <button class="nav-drawer-close" onclick="closeNavDrawer()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M18 6L6 18M6 6l12 12"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
   </div>
   <div class="nav-drawer-body">
@@ -245,26 +308,15 @@
     <div id="nav-chapters-drawer"></div>
   </div>
   <div class="nav-drawer-summary nav-summary">
-    <div class="summary-item">
-      <div class="summary-num answered" id="sum-answered-drawer">0</div>
-      <div class="summary-label">Đã trả lời</div>
-    </div>
-    <div class="summary-item">
-      <div class="summary-num unanswered" id="sum-unanswered-drawer">40</div>
-      <div class="summary-label">Chưa làm</div>
-    </div>
-    <div class="summary-item">
-      <div class="summary-num marked" id="sum-marked-drawer">0</div>
-      <div class="summary-label">Đánh dấu</div>
-    </div>
-    <div class="summary-item">
-      <div class="summary-num" style="color:var(--text-muted)" id="sum-remain-drawer">--:--</div>
-      <div class="summary-label">Thời gian</div>
-    </div>
+    <div class="summary-item"><div class="summary-num answered" id="sum-answered-drawer">0</div><div class="summary-label">Đã trả lời</div></div>
+    <div class="summary-item"><div class="summary-num unanswered" id="sum-unanswered-drawer">40</div><div class="summary-label">Chưa làm</div></div>
+    <div class="summary-item"><div class="summary-num marked" id="sum-marked-drawer">0</div><div class="summary-label">Đánh dấu</div></div>
+    <div class="summary-item"><div class="summary-num" style="color:var(--text-muted)" id="sum-remain-drawer">--:--</div><div class="summary-label">Thời gian</div></div>
   </div>
 </div>
 
 <script src="js/data.js"></script>
+<script src="js/practice.js"></script>
 <script src="js/quiz.js"></script>
 <script src="js/ui.js"></script>
 </body>

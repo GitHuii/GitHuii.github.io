@@ -6,7 +6,7 @@ let currentQ = 0;
 let timerInterval = null;
 let secondsLeft = 0;
 let isReviewMode = false;
-let isFullExam = false; // true = toàn bộ 150 câu, false = 40 câu ngẫu nhiên
+let isFullExam = false;
 
 // ===== HELPERS =====
 function shuffle(arr) {
@@ -21,17 +21,34 @@ function shuffle(arr) {
 function formatTime(s) {
   const m = Math.floor(s / 60);
   const sec = s % 60;
-  return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+  return String(m).padStart(2,'0') + ':' + String(sec).padStart(2,'0');
+}
+
+function hideAllScreens() {
+  clearInterval(timerInterval);
+  ['intro-screen','practice-screen','practice-complete-screen','quiz-screen','result-screen'].forEach(function(id) {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+}
+
+function backToIntro() {
+  hideAllScreens();
+  document.getElementById('intro-screen').style.display = 'flex';
+}
+
+function confirmBackFromQuiz() {
+  if (!isReviewMode) {
+    if (!confirm('Bạn có chắc muốn thoát? Bài kiểm tra sẽ bị mất.')) return;
+  }
+  hideAllScreens();
+  document.getElementById('intro-screen').style.display = 'flex';
 }
 
 // ===== BUILD QUIZ =====
-
-/**
- * Chế độ thông thường: 40 câu ngẫu nhiên (8/chương: 3 easy + 3 medium + 2 hard)
- */
 function buildRandomQuiz() {
   quiz = [];
-  [1, 2, 3, 4, 5].forEach(ch => {
+  [1,2,3,4,5].forEach(function(ch) {
     const bank = QUESTION_BANK[ch];
     const selected = [
       ...shuffle(bank.easy).slice(0, 3).map(q => ({ ...q, chapter: ch, diff: 'easy' })),
@@ -45,12 +62,9 @@ function buildRandomQuiz() {
   initState(quiz.length);
 }
 
-/**
- * Chế độ toàn bộ: tất cả câu hỏi trong ngân hàng (150 câu), xáo trộn
- */
 function buildFullQuiz() {
   quiz = [];
-  [1, 2, 3, 4, 5].forEach(ch => {
+  [1,2,3,4,5].forEach(function(ch) {
     const bank = QUESTION_BANK[ch];
     const all = [
       ...bank.easy.map(q => ({ ...q, chapter: ch, diff: 'easy' })),
@@ -80,7 +94,7 @@ function initState(total) {
 // ===== TIMER =====
 function startTimer() {
   clearInterval(timerInterval);
-  timerInterval = setInterval(() => {
+  timerInterval = setInterval(function() {
     secondsLeft--;
     updateTimerDisplay();
     const remainEl = document.getElementById('sum-remain');
@@ -95,42 +109,44 @@ function startTimer() {
 function updateTimerDisplay() {
   const el = document.getElementById('timer-text');
   const timerEl = document.getElementById('timer');
-  el.textContent = formatTime(secondsLeft);
-  if (secondsLeft < 300) timerEl.classList.add('warning');
-  else timerEl.classList.remove('warning');
+  if (el) el.textContent = formatTime(secondsLeft);
+  if (timerEl) {
+    if (secondsLeft < 300) timerEl.classList.add('warning');
+    else timerEl.classList.remove('warning');
+  }
 }
 
 // ===== START / SUBMIT =====
 function startQuiz() {
   isFullExam = false;
   buildRandomQuiz();
-  secondsLeft = 60 * 60; // 60 phút
+  secondsLeft = 60 * 60;
   _launchQuiz();
 }
 
 function startFullExam() {
   isFullExam = true;
   buildFullQuiz();
-  secondsLeft = 3 * 60 * 60; // 3 giờ
+  secondsLeft = 3 * 60 * 60;
   _launchQuiz();
 }
 
 function _launchQuiz() {
-  document.getElementById('intro-screen').style.display = 'none';
+  hideAllScreens();
   document.getElementById('quiz-screen').style.display = 'block';
   isReviewMode = false;
 
-  // Update header badge for full exam
   const badge = document.getElementById('quiz-mode-badge');
   if (isFullExam) {
-    badge.textContent = `Toàn bộ ${quiz.length} câu`;
+    badge.textContent = 'Toàn bộ ' + quiz.length + ' câu';
     badge.classList.add('visible');
   } else {
     badge.classList.remove('visible');
   }
 
-  document.getElementById('btn-submit').textContent = 'Nộp bài';
-  document.getElementById('btn-submit').onclick = confirmSubmit;
+  const btnSubmit = document.getElementById('btn-submit');
+  btnSubmit.textContent = 'Nộp bài';
+  btnSubmit.onclick = confirmSubmit;
 
   startTimer();
   renderNavPanel();
@@ -142,7 +158,7 @@ function confirmSubmit() {
   const answered = userAnswers.filter(a => a !== null).length;
   const unanswered = total - answered;
   if (unanswered > 0) {
-    if (!confirm(`Bạn còn ${unanswered} câu chưa trả lời. Bạn có chắc muốn nộp bài?`)) return;
+    if (!confirm('Bạn còn ' + unanswered + ' câu chưa trả lời. Bạn có chắc muốn nộp bài?')) return;
   }
   submitQuiz();
 }
@@ -150,9 +166,8 @@ function confirmSubmit() {
 function submitQuiz() {
   clearInterval(timerInterval);
   let correct = 0;
-  quiz.forEach((q, i) => { if (userAnswers[i] === q.correctIdx) correct++; });
-
-  document.getElementById('quiz-screen').style.display = 'none';
+  quiz.forEach(function(q, i) { if (userAnswers[i] === q.correctIdx) correct++; });
+  hideAllScreens();
   document.getElementById('result-screen').style.display = 'block';
   showResult(correct);
 }
@@ -168,81 +183,51 @@ function showResult(correct) {
   document.getElementById('rs-wrong').textContent = userAnswers.filter((a,i) => a !== null && a !== quiz[i].correctIdx).length;
   document.getElementById('rs-skip').textContent = userAnswers.filter(a => a === null).length;
   document.getElementById('rs-pct').textContent = pct + '%';
-
-  // Update score denom label
-  const totalPerChapter = isFullExam ? 30 : 8;
-  document.getElementById('result-total-label').textContent = `/ ${total} câu`;
+  document.getElementById('result-total-label').textContent = '/ ' + total + ' câu';
 
   const gradeEl = document.getElementById('result-grade');
   const msgEl = document.getElementById('result-msg');
   const circleEl = document.getElementById('score-circle');
-
   const scoreNum = parseFloat(score);
   const circumference = 502.65;
   const offset = circumference - (correct / total) * circumference;
-  setTimeout(() => circleEl.style.strokeDashoffset = offset, 300);
+  setTimeout(function() { circleEl.style.strokeDashoffset = offset; }, 300);
 
-  if (scoreNum >= 9) {
-    gradeEl.textContent = '🏆 Xuất sắc!'; gradeEl.style.color = '#f59e0b';
-    msgEl.textContent = 'Mày tày rồi!';
-  } else if (scoreNum >= 8) {
-    gradeEl.textContent = '🎯 Giỏi!'; gradeEl.style.color = '#3fb950';
-    msgEl.textContent = 'Kết quả rất tốt! Hãy ôn lại những câu còn sai.';
-  } else if (scoreNum >= 6.5) {
-    gradeEl.textContent = '👍 Khá!'; gradeEl.style.color = '#58a6ff';
-    msgEl.textContent = 'Kết quả khá. Còn nhiều chỗ có thể cải thiện thêm.';
-  } else if (scoreNum >= 5) {
-    gradeEl.textContent = '📚 Trung bình'; gradeEl.style.color = '#d29922';
-    msgEl.textContent = 'Cần ôn tập thêm để nắm chắc kiến thức.';
-  } else {
-    gradeEl.textContent = '💪 Cần cố gắng'; gradeEl.style.color = '#f85149';
-    msgEl.textContent = 'Hãy xem lại lý thuyết và làm bài luyện tập thêm nhé!';
-  }
+  if (scoreNum >= 9) { gradeEl.textContent = '🏆 Xuất sắc!'; gradeEl.style.color = '#f59e0b'; msgEl.textContent = 'Bạn nắm vững kiến thức điện toán đám mây rất tốt!'; }
+  else if (scoreNum >= 8) { gradeEl.textContent = '🎯 Giỏi!'; gradeEl.style.color = '#3fb950'; msgEl.textContent = 'Kết quả rất tốt! Hãy ôn lại những câu còn sai.'; }
+  else if (scoreNum >= 6.5) { gradeEl.textContent = '👍 Khá!'; gradeEl.style.color = '#58a6ff'; msgEl.textContent = 'Kết quả khá. Còn nhiều chỗ có thể cải thiện thêm.'; }
+  else if (scoreNum >= 5) { gradeEl.textContent = '📚 Trung bình'; gradeEl.style.color = '#d29922'; msgEl.textContent = 'Cần ôn tập thêm để nắm chắc kiến thức.'; }
+  else { gradeEl.textContent = '💪 Cần cố gắng'; gradeEl.style.color = '#f85149'; msgEl.textContent = 'Hãy xem lại lý thuyết và làm bài luyện tập thêm nhé!'; }
 
-  // Chapter breakdown
-  const chapterResultsHtml = [1,2,3,4,5].map(ch => {
+  const chapterResultsHtml = [1,2,3,4,5].map(function(ch) {
     const chQ = quiz.map((q,i) => ({ q, i })).filter(({q}) => q.chapter === ch);
     const chTotal = chQ.length;
     const chCorrect = chQ.filter(({q,i}) => userAnswers[i] === q.correctIdx).length;
     const pct = chTotal > 0 ? Math.round(chCorrect / chTotal * 100) : 0;
     const color = CHAPTER_COLORS[ch];
-    return `
-      <div class="chapter-result-row">
-        <div class="chapter-result-name" style="color:${color}">${QUESTION_BANK[ch].name}</div>
-        <div class="chapter-result-bar-wrap">
-          <div class="chapter-result-bar" style="width:0%;background:${color}" data-pct="${pct}"></div>
-        </div>
-        <div class="chapter-result-score">${chCorrect}/${chTotal}</div>
-      </div>
-    `;
+    return '<div class="chapter-result-row">' +
+      '<div class="chapter-result-name" style="color:' + color + '">' + QUESTION_BANK[ch].name + '</div>' +
+      '<div class="chapter-result-bar-wrap"><div class="chapter-result-bar" style="width:0%;background:' + color + '" data-pct="' + pct + '"></div></div>' +
+      '<div class="chapter-result-score">' + chCorrect + '/' + chTotal + '</div></div>';
   }).join('');
   document.getElementById('chapter-results-body').innerHTML = chapterResultsHtml;
-  setTimeout(() => {
-    document.querySelectorAll('.chapter-result-bar').forEach(bar => {
-      bar.style.width = bar.dataset.pct + '%';
-    });
+  setTimeout(function() {
+    document.querySelectorAll('.chapter-result-bar').forEach(function(bar) { bar.style.width = bar.dataset.pct + '%'; });
   }, 400);
 }
 
 function retryQuiz() {
   document.getElementById('result-screen').style.display = 'none';
-  if (isFullExam) startFullExam();
-  else startQuiz();
-}
-
-function backToIntro() {
-  clearInterval(timerInterval);
-  document.getElementById('result-screen').style.display = 'none';
-  document.getElementById('quiz-screen').style.display = 'none';
-  document.getElementById('intro-screen').style.display = 'flex';
+  if (isFullExam) startFullExam(); else startQuiz();
 }
 
 function showReview() {
   isReviewMode = true;
-  document.getElementById('result-screen').style.display = 'none';
+  hideAllScreens();
   document.getElementById('quiz-screen').style.display = 'block';
-  document.getElementById('btn-submit').textContent = '← Kết quả';
-  document.getElementById('btn-submit').onclick = () => {
+  const btnSubmit = document.getElementById('btn-submit');
+  btnSubmit.textContent = '← Kết quả';
+  btnSubmit.onclick = function() {
     document.getElementById('quiz-screen').style.display = 'none';
     document.getElementById('result-screen').style.display = 'block';
   };
