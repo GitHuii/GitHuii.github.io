@@ -5,543 +5,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ôn Tập Điện Toán Đám Mây</title>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<style>
-  
-  :root {
-    --bg: #ffffff;
-    --surface: #f6f8fa;
-    --surface2: #ebedf0;
-    --surface3: #d0d7de;
-    --border: #d0d7de;
-    --text: #1F2328;
-    --text-muted: #656d76;
-    --text-dim: #8c959f;
-    --accent: #0969da;
-    --accent-glow: rgba(9,105,218,0.1);
-    --green: #1a7f37;
-    --green-glow: #dafbe1;
-    --red: #d1242f;
-    --red-glow: #ffebe9;
-    --yellow: #9a6700;
-    --yellow-glow: #fff8c5;
-    --purple: #8250df;
-    --orange: #bc4c00;
-    
-    --c1: #0969da;
-    --c2: #1a7f37;
-    --c3: #bc4c00;
-    --c4: #d1242f;
-    --c5: #8250df;
-  }
-
-
-  body {
-    font-family: 'Be Vietnam Pro', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* ===== INTRO SCREEN ===== */
-  #intro-screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 2rem;
-    background: radial-gradient(ellipse at 20% 50%, rgba(88,166,255,0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, rgba(139,92,246,0.08) 0%, transparent 50%),
-                var(--bg);
-    position: relative;
-  }
-
-  .grid-bg {
-    position: absolute; inset: 0;
-    background-image: 
-      linear-gradient(rgba(48,54,61,0.4) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(48,54,61,0.4) 1px, transparent 1px);
-    background-size: 40px 40px;
-    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
-  }
-
-  .intro-content { position: relative; z-index: 1; text-align: center; max-width: 700px; }
-
-  .intro-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 100px; padding: 6px 16px;
-    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em;
-    color: var(--accent); text-transform: uppercase;
-    margin-bottom: 2rem;
-  }
-
-  .intro-badge span { width: 6px; height: 6px; border-radius: 50%; background: var(--green); display: inline-block; animation: pulse 2s infinite; }
-
-  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
-
-  .intro-title {
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    font-weight: 800;
-    line-height: 1.1;
-    margin-bottom: 1rem;
-    background: linear-gradient(135deg, #e6edf3 30%, #58a6ff 70%, #8b5cf6 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .intro-subtitle {
-    font-size: 1.1rem;
-    color: var(--text-muted);
-    margin-bottom: 3rem;
-    line-height: 1.7;
-  }
-
-  .stats-row {
-    display: flex; gap: 1.5rem; justify-content: center;
-    flex-wrap: wrap; margin-bottom: 3rem;
-  }
-
-  .stat-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 12px; padding: 1.2rem 1.8rem;
-    text-align: center; min-width: 130px;
-  }
-
-  .stat-num { font-size: 2rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; color: var(--accent); }
-  .stat-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
-
-  .chapter-tags {
-    display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center;
-    margin-bottom: 3rem;
-  }
-
-  .chapter-tag {
-    padding: 6px 14px; border-radius: 6px; font-size: 0.78rem; font-weight: 600;
-    border: 1px solid;
-  }
-
-  .chapter-tag.c1 { color: var(--c1); border-color: rgba(88,166,255,0.3); background: rgba(88,166,255,0.08); }
-  .chapter-tag.c2 { color: var(--c2); border-color: rgba(63,185,80,0.3); background: rgba(63,185,80,0.08); }
-  .chapter-tag.c3 { color: var(--c3); border-color: rgba(249,115,22,0.3); background: rgba(249,115,22,0.08); }
-  .chapter-tag.c4 { color: var(--c4); border-color: rgba(248,81,73,0.3); background: rgba(248,81,73,0.08); }
-  .chapter-tag.c5 { color: var(--c5); border-color: rgba(139,92,246,0.3); background: rgba(139,92,246,0.08); }
-
-  .btn-start {
-    display: inline-flex; align-items: center; gap: 12px;
-    background: var(--accent); color: #ffffff;
-    border: none; border-radius: 12px;
-    padding: 1rem 2.5rem; font-size: 1.05rem; font-weight: 700;
-    font-family: 'Be Vietnam Pro', sans-serif;
-    cursor: pointer; transition: all 0.2s;
-    box-shadow: 0 0 0 0 rgba(88,166,255,0.4);
-  }
-
-  .btn-start:hover {
-    background: #79c0ff; transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(88,166,255,0.35);
-  }
-
-  .btn-start svg { width: 20px; height: 20px; }
-
-  /* ===== QUIZ LAYOUT ===== */
-  #quiz-screen { display: none; }
-
-  .quiz-header {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 0.8rem 1.5rem;
-    display: flex; align-items: center; gap: 1.5rem;
-    position: sticky; top: 0; z-index: 100;
-  }
-
-  .quiz-logo {
-    font-weight: 800; font-size: 0.9rem; letter-spacing: 0.04em;
-    color: var(--accent); white-space: nowrap;
-  }
-
-  .progress-wrap { flex: 1; }
-  .progress-label { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px; display: flex; justify-content: space-between; }
-  .progress-bar { height: 4px; background: var(--surface3); border-radius: 2px; overflow: hidden; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--purple)); border-radius: 2px; transition: width 0.4s ease; }
-
-  .timer {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.95rem; font-weight: 600;
-    color: var(--text); white-space: nowrap;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .timer svg { color: var(--text-muted); }
-  .timer.warning { color: var(--red); }
-
-  .btn-submit {
-    background: var(--green); color: #ffffff;
-    border: none; border-radius: 8px;
-    padding: 0.5rem 1.2rem; font-size: 0.85rem; font-weight: 700;
-    font-family: 'Be Vietnam Pro', sans-serif;
-    cursor: pointer; white-space: nowrap; transition: all 0.2s;
-  }
-  .btn-submit:hover { background: #56d364; }
-
-  .quiz-body {
-    display: grid; grid-template-columns: 1fr 280px;
-    gap: 0; min-height: calc(100vh - 57px);
-  }
-
-  /* LEFT: Question Panel */
-  .question-panel {
-    padding: 2rem 2.5rem;
-    border-right: 1px solid var(--border);
-    overflow-y: auto;
-  }
-
-  .q-meta {
-    display: flex; align-items: center; gap: 0.8rem;
-    margin-bottom: 1.5rem; flex-wrap: wrap;
-  }
-
-  .q-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem; color: var(--text-muted);
-  }
-
-  .q-chapter-badge {
-    font-size: 0.7rem; font-weight: 700;
-    padding: 3px 10px; border-radius: 4px;
-    border: 1px solid; text-transform: uppercase; letter-spacing: 0.06em;
-  }
-
-  .q-diff-badge {
-    font-size: 0.68rem; font-weight: 600;
-    padding: 2px 8px; border-radius: 4px;
-    background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border);
-  }
-
-  .q-mark-btn {
-    margin-left: auto;
-    display: flex; align-items: center; gap: 6px;
-    background: none; border: 1px solid var(--border);
-    border-radius: 6px; padding: 4px 10px;
-    font-size: 0.72rem; font-weight: 600; color: var(--text-muted);
-    cursor: pointer; transition: all 0.2s; font-family: 'Be Vietnam Pro', sans-serif;
-  }
-  .q-mark-btn:hover { border-color: var(--yellow); color: var(--yellow); }
-  .q-mark-btn.marked { border-color: var(--yellow); color: var(--yellow); background: var(--yellow-glow); }
-  .q-mark-btn svg { width: 13px; height: 13px; }
-
-  .question-text {
-    font-size: 1.05rem; font-weight: 600; line-height: 1.7;
-    margin-bottom: 2rem; color: var(--text);
-  }
-
-  .answers-list { display: flex; flex-direction: column; gap: 0.75rem; }
-
-  .answer-option {
-    display: flex; align-items: flex-start; gap: 1rem;
-    padding: 1rem 1.2rem;
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; cursor: pointer; transition: all 0.18s;
-    position: relative; overflow: hidden;
-  }
-
-  .answer-option:hover:not(.disabled) {
-    border-color: var(--accent);
-    background: var(--accent-glow);
-  }
-
-  .answer-option.selected {
-    border-color: var(--accent);
-    background: var(--accent-glow);
-  }
-
-  .answer-option.correct {
-    border-color: var(--green);
-    background: var(--green-glow);
-  }
-
-  .answer-option.wrong {
-    border-color: var(--red);
-    background: var(--red-glow);
-    opacity: 0.7;
-  }
-
-  .answer-option.disabled { cursor: default; }
-
-  .answer-key {
-    width: 28px; height: 28px; border-radius: 6px;
-    background: var(--surface2); border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; font-weight: 700;
-    flex-shrink: 0; transition: all 0.18s; color: var(--text-muted);
-  }
-
-  .answer-option.selected .answer-key { background: var(--accent); border-color: var(--accent); color: #ffffff; }
-  .answer-option.correct .answer-key { background: var(--green); border-color: var(--green); color: #ffffff; }
-  .answer-option.wrong .answer-key { background: var(--red); border-color: var(--red); color: #fff; }
-
-  .answer-text { font-size: 0.9rem; line-height: 1.5; padding-top: 3px; flex: 1; }
-
-  .q-nav {
-    display: flex; gap: 0.75rem; margin-top: 2rem; padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
-  }
-
-  .btn-nav {
-    display: flex; align-items: center; gap: 6px;
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 8px; padding: 0.6rem 1.2rem;
-    font-size: 0.82rem; font-weight: 600; color: var(--text);
-    cursor: pointer; transition: all 0.18s; font-family: 'Be Vietnam Pro', sans-serif;
-  }
-  .btn-nav:hover { border-color: var(--accent); color: var(--accent); }
-  .btn-nav:disabled { opacity: 0.35; cursor: default; }
-  .btn-nav svg { width: 15px; height: 15px; }
-  .btn-nav-next { margin-left: auto; background: var(--accent); border-color: var(--accent); color: #ffffff; }
-  .btn-nav-next:hover { background: #79c0ff; border-color: #79c0ff; color: #ffffff; }
-
-  /* RIGHT: Navigation Panel */
-  .nav-panel {
-    background: var(--surface);
-    padding: 1.2rem;
-    overflow-y: auto;
-    position: sticky; top: 57px; height: calc(100vh - 57px);
-  }
-
-  .nav-panel-title {
-    font-size: 0.7rem; font-weight: 700; color: var(--text-muted);
-    text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.8rem;
-    padding-bottom: 0.6rem; border-bottom: 1px solid var(--border);
-  }
-
-  .nav-legend {
-    display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem;
-  }
-
-  .nav-legend-item {
-    display: flex; align-items: center; gap: 4px;
-    font-size: 0.65rem; color: var(--text-muted);
-  }
-
-  .nav-dot {
-    width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0;
-  }
-  .nav-dot.answered { background: var(--accent); }
-  .nav-dot.marked { background: var(--yellow); }
-  .nav-dot.current { background: var(--purple); }
-  .nav-dot.unanswered { background: var(--surface3); border: 1px solid var(--border); }
-
-  .nav-chapter-section { margin-bottom: 1rem; }
-
-  .nav-chapter-label {
-    font-size: 0.65rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.08em;
-    margin-bottom: 0.4rem; padding: 3px 0;
-  }
-
-  .nav-chapter-label.c1 { color: var(--c1); }
-  .nav-chapter-label.c2 { color: var(--c2); }
-  .nav-chapter-label.c3 { color: var(--c3); }
-  .nav-chapter-label.c4 { color: var(--c4); }
-  .nav-chapter-label.c5 { color: var(--c5); }
-
-  .nav-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
-
-  .nav-btn {
-    aspect-ratio: 1; border-radius: 6px;
-    border: 1px solid var(--border);
-    background: var(--surface2); color: var(--text-muted);
-    font-size: 0.7rem; font-weight: 600; font-family: 'JetBrains Mono', monospace;
-    cursor: pointer; transition: all 0.15s;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .nav-btn.answered { background: var(--accent-glow); border-color: var(--accent); color: var(--accent); }
-  
-  .nav-btn.correct-nav { 
-    background-color: var(--green-glow) !important; 
-    border-color: var(--green) !important; 
-    color: var(--green) !important; 
-  }
-  .nav-btn.wrong-nav { 
-    background-color: var(--red-glow) !important; 
-    border-color: var(--red) !important; 
-    color: var(--red) !important; 
-  }
-
-  .nav-btn.marked { background: var(--yellow-glow); border-color: var(--yellow); color: var(--yellow); }
-  .nav-btn.current { background: var(--purple); border-color: var(--purple); color: #fff; }
-  .nav-btn.marked.current { background: var(--yellow); border-color: var(--yellow); color: #ffffff; }
-
-  .nav-summary {
-    margin-top: 1rem; padding-top: 0.8rem;
-    border-top: 1px solid var(--border);
-    display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
-  }
-
-  .summary-item {
-    background: var(--surface2); border-radius: 8px; padding: 0.6rem;
-    text-align: center; border: 1px solid var(--border);
-  }
-  .summary-num { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 700; }
-  .summary-num.answered { color: var(--accent); }
-  .summary-num.unanswered { color: var(--text-muted); }
-  .summary-num.marked { color: var(--yellow); }
-  .summary-label { font-size: 0.62rem; color: var(--text-muted); margin-top: 2px; }
-
-  /* ===== RESULT SCREEN ===== */
-  #result-screen {
-    display: none; min-height: 100vh;
-    background: radial-gradient(ellipse at 50% 0%, rgba(88,166,255,0.06) 0%, transparent 60%), var(--bg);
-    padding: 3rem 1.5rem;
-  }
-
-  .result-container { max-width: 900px; margin: 0 auto; }
-
-  .result-header { text-align: center; margin-bottom: 3rem; }
-
-  .score-ring {
-    width: 180px; height: 180px; margin: 0 auto 1.5rem;
-    position: relative;
-  }
-
-  .score-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
-
-  .score-ring-text {
-    position: absolute; inset: 0;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-  }
-
-  .score-big { font-size: 2.8rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
-  .score-denom { font-size: 0.85rem; color: var(--text-muted); }
-
-  .result-grade {
-    font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem;
-  }
-
-  .result-msg { color: var(--text-muted); font-size: 0.95rem; }
-
-  .result-stats {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 1rem; margin-bottom: 2.5rem;
-  }
-
-  .result-stat-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 12px; padding: 1.2rem;
-    text-align: center;
-  }
-
-  .result-stat-val {
-    font-size: 1.8rem; font-weight: 800; font-family: 'JetBrains Mono', monospace;
-    margin-bottom: 0.25rem;
-  }
-  .result-stat-label { font-size: 0.75rem; color: var(--text-muted); }
-
-  .chapter-results {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;
-  }
-
-  .chapter-results-title {
-    font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 1.2rem;
-  }
-
-  .chapter-result-row {
-    display: flex; align-items: center; gap: 1rem; margin-bottom: 0.8rem;
-  }
-
-  .chapter-result-name { font-size: 0.82rem; font-weight: 600; min-width: 120px; }
-  .chapter-result-bar-wrap { flex: 1; height: 6px; background: var(--surface3); border-radius: 3px; overflow: hidden; }
-  .chapter-result-bar { height: 100%; border-radius: 3px; transition: width 1s ease; }
-  .chapter-result-score { font-size: 0.78rem; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); min-width: 40px; text-align: right; }
-
-  .result-actions {
-    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
-  }
-
-  .btn-retry {
-    display: flex; align-items: center; gap: 8px;
-    background: var(--accent); color: #ffffff; border: none;
-    border-radius: 10px; padding: 0.8rem 2rem;
-    font-size: 0.95rem; font-weight: 700; cursor: pointer;
-    font-family: 'Be Vietnam Pro', sans-serif; transition: all 0.2s;
-  }
-  .btn-retry:hover { background: #79c0ff; transform: translateY(-1px); }
-
-  .btn-review {
-    display: flex; align-items: center; gap: 8px;
-    background: var(--surface); color: var(--text); border: 1px solid var(--border);
-    border-radius: 10px; padding: 0.8rem 2rem;
-    font-size: 0.95rem; font-weight: 700; cursor: pointer;
-    font-family: 'Be Vietnam Pro', sans-serif; transition: all 0.2s;
-  }
-  .btn-review:hover { border-color: var(--accent); color: var(--accent); }
-
-  /* REVIEW MODE */
-  .review-answer-label {
-    font-size: 0.72rem; font-weight: 700; color: var(--text-muted);
-    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .review-answer-label .dot { width: 6px; height: 6px; border-radius: 50%; }
-  .review-answer-label.correct .dot { background: var(--green); }
-  .review-answer-label.wrong .dot { background: var(--red); }
-
-  .correct-indicator {
-    display: inline-flex; align-items: center; gap: 4px;
-    font-size: 0.7rem; font-weight: 600; color: var(--green);
-    margin-left: auto;
-  }
-
-  /* Animations */
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
-
-  .question-panel { animation: fadeIn 0.25s ease; }
-  .result-container { animation: fadeIn 0.4s ease; }
-
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
-
-  @media (max-width: 768px) {
-    .quiz-body { grid-template-columns: 1fr; }
-    .nav-panel { position: fixed; bottom: 0; left: 0; right: 0; height: auto; max-height: 50vh; z-index: 90; border-top: 1px solid var(--border); }
-    .question-panel { padding-bottom: 200px; }
-  }
-</style>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<!-- INTRO SCREEN -->
+<!-- ===== INTRO SCREEN ===== -->
 <div id="intro-screen">
   <div class="grid-bg"></div>
   <div class="intro-content">
     <div class="intro-badge"><span></span>Hệ thống ôn tập trắc nghiệm</div>
     <h1 class="intro-title">Điện Toán<br>Đám Mây</h1>
-    <p class="intro-subtitle">Kiểm tra kiến thức về Cloud Computing qua 40 câu trắc nghiệm<br>được chọn ngẫu nhiên từ ngân hàng câu hỏi 5 chương</p>
+    <p class="intro-subtitle">Kiểm tra kiến thức về Cloud Computing qua bài trắc nghiệm<br>được chọn từ ngân hàng câu hỏi 5 chương</p>
+
     <div class="stats-row">
       <div class="stat-card">
-        <div class="stat-num">40</div>
-        <div class="stat-label">Câu hỏi</div>
+        <div class="stat-num" id="full-exam-count">150</div>
+        <div class="stat-label">Tổng câu hỏi</div>
       </div>
       <div class="stat-card">
         <div class="stat-num">5</div>
         <div class="stat-label">Chương</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-num">60</div>
-        <div class="stat-label">Phút</div>
-      </div>
+      <!-- <div class="stat-card">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Độ khó</div>
+      </div> -->
       <div class="stat-card">
         <div class="stat-num">10</div>
         <div class="stat-label">Thang điểm</div>
       </div>
     </div>
+
     <div class="chapter-tags">
       <span class="chapter-tag c1">Chương MĐ – Tổng quan Cloud</span>
       <span class="chapter-tag c2">Chương 2</span>
@@ -549,29 +43,49 @@
       <span class="chapter-tag c4">Chương 4 – An toàn & Bảo mật</span>
       <span class="chapter-tag c5">Chương 5 – Sử dụng Dịch vụ</span>
     </div>
-    <button class="btn-start" onclick="startQuiz()">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-      Bắt đầu kiểm tra
-    </button>
+
+    <div class="mode-row">
+      <button class="btn-mode btn-mode-primary" onclick="startQuiz()">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        <div class="btn-mode-label">
+          <span>Kiểm tra ngẫu nhiên</span>
+          <span class="btn-mode-info">40 câu · 60 phút · xáo trộn</span>
+        </div>
+      </button>
+      <button class="btn-mode btn-mode-secondary" onclick="startFullExam()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/>
+        </svg>
+        <div class="btn-mode-label">
+          <span>Kiểm tra toàn bộ</span>
+          <span class="btn-mode-info"><span id="full-exam-count-btn">150</span> câu · 3 giờ · tất cả chương</span>
+        </div>
+      </button>
+    </div>
   </div>
 </div>
 
-<!-- QUIZ SCREEN -->
+<!-- ===== QUIZ SCREEN ===== -->
 <div id="quiz-screen">
   <header class="quiz-header">
     <div class="quiz-logo">☁ Cloud Quiz</div>
+    <span class="quiz-mode-badge" id="quiz-mode-badge"></span>
     <div class="progress-wrap">
       <div class="progress-label">
         <span id="progress-text">0 / 40 câu đã trả lời</span>
         <span id="progress-pct">0%</span>
       </div>
-      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
     </div>
     <div class="timer" id="timer">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+      </svg>
       <span id="timer-text">60:00</span>
     </div>
-    <button class="btn-submit" onclick="confirmSubmit()">Nộp bài</button>
+    <button class="btn-submit" id="btn-submit" onclick="confirmSubmit()">Nộp bài</button>
   </header>
 
   <div class="quiz-body">
@@ -600,7 +114,7 @@
       </div>
     </div>
 
-    <!-- RIGHT: Navigation -->
+    <!-- RIGHT: Navigation Panel -->
     <div class="nav-panel">
       <div class="nav-panel-title">Danh sách câu hỏi</div>
       <div class="nav-legend">
@@ -632,20 +146,20 @@
   </div>
 </div>
 
-<!-- RESULT SCREEN -->
+<!-- ===== RESULT SCREEN ===== -->
 <div id="result-screen">
   <div class="result-container">
     <div class="result-header">
       <div class="score-ring">
         <svg viewBox="0 0 180 180">
-          <circle cx="90" cy="90" r="80" fill="none" stroke="#21262d" stroke-width="12"/>
-          <circle cx="90" cy="90" r="80" fill="none" stroke="#58a6ff" stroke-width="12"
+          <circle cx="90" cy="90" r="80" fill="none" stroke="#d0d7de" stroke-width="12"/>
+          <circle cx="90" cy="90" r="80" fill="none" stroke="#0969da" stroke-width="12"
             stroke-linecap="round" stroke-dasharray="502.65"
             id="score-circle" stroke-dashoffset="502.65"/>
         </svg>
         <div class="score-ring-text">
           <div class="score-big" id="score-big">0.0</div>
-          <div class="score-denom">/ 10 điểm</div>
+          <div class="score-denom" id="result-total-label">/ 40 câu</div>
         </div>
       </div>
       <div class="result-grade" id="result-grade"></div>
@@ -678,526 +192,30 @@
 
     <div class="result-actions">
       <button class="btn-retry" onclick="retryQuiz()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-        Làm bài khác
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+        </svg>
+        Làm lại
       </button>
       <button class="btn-review" onclick="showReview()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+        </svg>
         Xem đáp án
+      </button>
+      <button class="btn-review" onclick="backToIntro()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        Trang chủ
       </button>
     </div>
   </div>
 </div>
 
-<script>
-// ===== QUESTION BANK =====
-const QUESTION_BANK = {
-  1: {
-    name: "Tổng quan Cloud",
-    color: "c1",
-    easy: [
-      { q: "Điện toán đám mây (cloud computing) là:", opts: ["Hệ thống máy tính cá nhân","Mô hình cung cấp tài nguyên qua Internet","Phần mềm offline","Hệ điều hành"], ans: 1 },
-      { q: "Cloud computing bắt nguồn từ ý tưởng:", opts: ["AI","Time-sharing","Blockchain","IoT"], ans: 1 },
-      { q: "Người dùng cloud không cần quan tâm đến:", opts: ["Ứng dụng","Dữ liệu","Hạ tầng","Truy cập"], ans: 2 },
-      { q: "Một đặc điểm của cloud là:", opts: ["Không có mạng","Truy cập qua Internet","Không có dữ liệu","Không có user"], ans: 1 },
-      { q: "AWS được Amazon cung cấp vào năm:", opts: ["2000","2003","2006","2010"], ans: 2 },
-      { q: "Một nhà cung cấp cloud lớn là:", opts: ["Google","CPU","RAM","BIOS"], ans: 0 },
-      { q: "Cloud giúp:", opts: ["Tăng chi phí","Giảm chi phí","Không thay đổi chi phí","Không có chi phí"], ans: 1 },
-      { q: "Cloud computing thuộc loại hệ thống:", opts: ["Tập trung","Phân tán","Offline","Standalone"], ans: 1 },
-      { q: "Người dùng cloud truy cập dịch vụ thông qua:", opts: ["USB","Internet","CPU","RAM"], ans: 1 },
-      { q: "Một lợi ích của cloud là:", opts: ["Không mở rộng","Mở rộng linh hoạt","Không có dữ liệu","Không truy cập"], ans: 1 },
-    ],
-    medium: [
-      { q: "Cloud computing cho phép:", opts: ["Truy cập tài nguyên theo nhu cầu","Không truy cập","Không lưu trữ","Không xử lý"], ans: 0 },
-      { q: "Một đặc tính của cloud theo NIST là:", opts: ["Không mạng","On-demand self-service","Không user","Không dữ liệu"], ans: 1 },
-      { q: "Broad network access nghĩa là:", opts: ["Truy cập hạn chế","Truy cập rộng qua nhiều thiết bị","Không truy cập","Chỉ server"], ans: 1 },
-      { q: "Resource pooling nghĩa là:", opts: ["Không chia sẻ","Chia sẻ tài nguyên","Không có tài nguyên","Không dùng mạng"], ans: 1 },
-      { q: "Rapid elasticity thể hiện:", opts: ["Không mở rộng","Mở rộng nhanh tài nguyên","Không giảm tài nguyên","Không thay đổi"], ans: 1 },
-      { q: "Measured service nghĩa là:", opts: ["Không đo lường","Tính phí theo sử dụng","Không có chi phí","Không có dữ liệu"], ans: 1 },
-      { q: "Virtualization giúp:", opts: ["Xóa dữ liệu","Tạo máy ảo","Không dùng CPU","Không dùng RAM"], ans: 1 },
-      { q: "Web 2.0 hỗ trợ:", opts: ["Phát triển ứng dụng web","Xóa dữ liệu","Không có giao diện","Không có user"], ans: 0 },
-      { q: "Automation trong cloud giúp:", opts: ["Không điều phối","Tự động cấp phát tài nguyên","Xóa dữ liệu","Không quản lý"], ans: 1 },
-      { q: "Một ưu điểm của cloud là:", opts: ["Không chia sẻ","Chia sẻ tài nguyên","Không truy cập","Không có mạng"], ans: 1 },
-    ],
-    hard: [
-      { q: "Điểm cốt lõi của cloud computing là:", opts: ["Không dùng mạng","Cung cấp tài nguyên như dịch vụ","Không có dữ liệu","Không có user"], ans: 1 },
-      { q: "Vì sao cloud giống dịch vụ điện/nước?", opts: ["Không có chi phí","Trả theo mức sử dụng","Không có dữ liệu","Không có user"], ans: 1 },
-      { q: "Virtualization giúp tăng hiệu quả vì:", opts: ["Không dùng tài nguyên","Chia sẻ tài nguyên vật lý","Xóa dữ liệu","Không có CPU"], ans: 1 },
-      { q: "Một nhược điểm của cloud là:", opts: ["Không có dữ liệu","Lo ngại bảo mật","Không có mạng","Không có user"], ans: 1 },
-      { q: "Data center trong cloud có vai trò:", opts: ["Xóa dữ liệu","Lưu trữ và xử lý tài nguyên","Không có dữ liệu","Không có CPU"], ans: 1 },
-      { q: "Tính co giãn của cloud liên quan đến:", opts: ["RAM","CPU","Khả năng mở rộng linh hoạt","Disk"], ans: 2 },
-      { q: "Một thách thức của cloud là:", opts: ["Không có dữ liệu","Mất quyền kiểm soát","Không có mạng","Không có user"], ans: 1 },
-      { q: "Cloud giúp tối ưu tài nguyên vì:", opts: ["Không dùng tài nguyên","Giảm tài nguyên nhàn rỗi","Xóa dữ liệu","Không có CPU"], ans: 1 },
-      { q: "Công nghệ nền tảng của cloud gồm:", opts: ["Virtualization, distributed computing","CPU, RAM","BIOS","USB"], ans: 0 },
-      { q: "Mô hình cloud phù hợp vì:", opts: ["Không có chi phí","Linh hoạt và hiệu quả","Không có dữ liệu","Không có user"], ans: 1 },
-    ]
-  },
-  2: {
-    name: "Chương 2",
-    color: "c2",
-    easy: [
-      { q: "Điện toán đám mây cung cấp tài nguyên dưới dạng nào?", opts: ["Phần cứng cục bộ","Dịch vụ qua Internet","File offline","Thiết bị cá nhân"], ans: 1 },
-      { q: "Một đặc điểm của cloud là người dùng không cần quan tâm đến:", opts: ["Chi phí","Cách vận hành hạ tầng","Dữ liệu","Ứng dụng"], ans: 1 },
-      { q: "Cloud computing giúp:", opts: ["Tăng chi phí triển khai","Giảm chi phí và thời gian triển khai","Tăng độ phức tạp hệ thống","Giảm hiệu năng"], ans: 1 },
-      { q: "AWS được Amazon cung cấp vào năm nào?", opts: ["2000","2003","2006","2010"], ans: 2 },
-      { q: "Cloud computing phát triển từ ý tưởng nào ban đầu?", opts: ["Personal computing","Time-sharing","AI","Blockchain"], ans: 1 },
-      { q: "Công nghệ quan trọng nhất trong cloud là:", opts: ["AI","IoT","Ảo hóa","Blockchain"], ans: 2 },
-      { q: "Máy ảo chạy trên máy vật lý gọi là:", opts: ["Host","Guest","Node","Cluster"], ans: 1 },
-      { q: "Hypervisor dùng để:", opts: ["Lưu trữ dữ liệu","Tạo máy ảo","Mã hóa dữ liệu","Tăng tốc CPU"], ans: 1 },
-      { q: "Một lợi ích của cloud là:", opts: ["Không truy cập từ xa","Triển khai chậm","Truy cập mọi nơi qua Internet","Không chia sẻ tài nguyên"], ans: 2 },
-      { q: "Cloud computing thuộc loại hệ thống:", opts: ["Tập trung đơn lẻ","Phân tán","Offline","Standalone"], ans: 1 },
-    ],
-    medium: [
-      { q: "Theo NIST, cloud computing là mô hình cho phép:", opts: ["Truy cập cục bộ","Truy cập tài nguyên chia sẻ qua mạng","Chỉ lưu trữ dữ liệu","Chỉ xử lý dữ liệu"], ans: 1 },
-      { q: "Đặc tính \"on-demand self-service\" nghĩa là:", opts: ["Người dùng phải yêu cầu thủ công","Người dùng tự cấp phát tài nguyên","Không cấp phát tài nguyên","Chỉ admin mới cấp"], ans: 1 },
-      { q: "\"Broad network access\" thể hiện:", opts: ["Truy cập hạn chế","Truy cập rộng qua nhiều thiết bị","Không truy cập Internet","Chỉ PC"], ans: 1 },
-      { q: "Resource pooling nghĩa là:", opts: ["Không chia sẻ tài nguyên","Tài nguyên được tập trung và chia sẻ","Chỉ một người dùng","Không ảo hóa"], ans: 1 },
-      { q: "Rapid elasticity thể hiện:", opts: ["Không mở rộng được","Mở rộng tài nguyên nhanh theo nhu cầu","Chỉ mở rộng thủ công","Không giảm tài nguyên"], ans: 1 },
-      { q: "Measured service nghĩa là:", opts: ["Không đo lường","Tính phí theo mức sử dụng","Miễn phí","Không kiểm soát"], ans: 1 },
-      { q: "Web 2.0 trong cloud giúp:", opts: ["Giảm giao diện","Phát triển ứng dụng web dễ dàng","Không hỗ trợ web","Chỉ backend"], ans: 1 },
-      { q: "Automation trong cloud giúp:", opts: ["Giảm hiệu suất","Tự động điều phối tài nguyên","Xóa dữ liệu","Không kiểm soát"], ans: 1 },
-      { q: "Một ưu điểm của cloud là:", opts: ["Không mở rộng","Khả năng co giãn","Không chia sẻ","Không truy cập từ xa"], ans: 1 },
-      { q: "Nhược điểm của cloud là:", opts: ["Không có chi phí","Lo ngại bảo mật","Không có dữ liệu","Không có dịch vụ"], ans: 1 },
-    ],
-    hard: [
-      { q: "Điểm khác biệt chính giữa cloud và mô hình truyền thống là:", opts: ["Không dùng mạng","Không cần phần mềm","Cung cấp tài nguyên như dịch vụ","Không có dữ liệu"], ans: 2 },
-      { q: "Vì sao tài nguyên cloud \"trong suốt\" với người dùng?", opts: ["Do không tồn tại","Do được ảo hóa và tập trung","Do không sử dụng","Do bị khóa"], ans: 1 },
-      { q: "Vai trò của data center trong cloud là:", opts: ["Lưu trữ tài nguyên phân tán quy mô lớn","Chỉ lưu file nhỏ","Không lưu dữ liệu","Chỉ chạy ứng dụng"], ans: 0 },
-      { q: "Virtualization giúp:", opts: ["Giảm số lượng máy ảo","Chia nhỏ tài nguyên vật lý thành nhiều máy ảo","Xóa dữ liệu","Không tối ưu tài nguyên"], ans: 1 },
-      { q: "Một hạn chế của cloud là:", opts: ["Không mở rộng","Phụ thuộc nhà cung cấp","Không truy cập","Không có dịch vụ"], ans: 1 },
-      { q: "Cloud giúp tiết kiệm chi phí vì:", opts: ["Không dùng tài nguyên","Chuyển CAPEX sang OPEX","Không cần phần mềm","Không có dữ liệu"], ans: 1 },
-      { q: "Tính co giãn của cloud liên quan trực tiếp đến:", opts: ["CPU","Network","Khả năng mở rộng tài nguyên theo thời gian thực","RAM"], ans: 2 },
-      { q: "Một vấn đề trong cloud là:", opts: ["Không có SLA","SLA phức tạp và phụ thuộc nhà cung cấp","Không có dữ liệu","Không có API"], ans: 1 },
-      { q: "Mô hình cloud giải quyết vấn đề gì của hệ thống truyền thống?", opts: ["Thiếu dữ liệu","Tài nguyên nhàn rỗi và kém hiệu quả","Không có phần mềm","Không có mạng"], ans: 1 },
-      { q: "Cloud computing được xem như \"dịch vụ tiện ích\" (utility computing) vì:", opts: ["Không tính phí","Giống điện/nước – dùng bao nhiêu trả bấy nhiêu","Không có mạng","Không có dữ liệu"], ans: 1 },
-    ]
-  },
-  3: {
-    name: "Lưu trữ & Xử lý DL",
-    color: "c3",
-    easy: [
-      { q: "NFS là viết tắt của:", opts: ["Network File System","Node File Service","Network Fast Storage","New File System"], ans: 0 },
-      { q: "AFS là viết tắt của:", opts: ["Advanced File System","Andrew File System","Automatic File Storage","Access File Server"], ans: 1 },
-      { q: "Khi truy cập file trong AFS, dữ liệu được:", opts: ["Chỉ đọc từ server","Sao chép về máy client","Không truyền qua mạng","Xóa ngay"], ans: 1 },
-      { q: "HDFS thuộc framework nào?", opts: ["Spark","Hadoop","AWS","Azure"], ans: 1 },
-      { q: "HDFS được thiết kế để xử lý:", opts: ["Dữ liệu nhỏ","Dữ liệu trung bình","Dữ liệu lớn","Dữ liệu offline"], ans: 2 },
-      { q: "GFS là hệ thống file của:", opts: ["Microsoft","Amazon","Google","IBM"], ans: 2 },
-      { q: "Big Data thường có đặc điểm:", opts: ["Nhỏ, đơn giản","Lớn và phức tạp","Không thay đổi","Không lưu trữ"], ans: 1 },
-      { q: "NoSQL dùng để:", opts: ["Thay thế hoàn toàn SQL","Lưu trữ dữ liệu phi cấu trúc","Xóa dữ liệu","Giảm mạng"], ans: 1 },
-      { q: "HDFS hoạt động trên mô hình:", opts: ["Tập trung","Phân tán","Offline","Standalone"], ans: 1 },
-      { q: "Hadoop sử dụng mô hình tính toán nào?", opts: ["Threading","MapReduce","Pipeline","Queue"], ans: 1 },
-    ],
-    medium: [
-      { q: "Điểm khác biệt chính của AFS so với NFS là:", opts: ["Không dùng mạng","Sao chép toàn bộ file về client","Không lưu file","Không có server"], ans: 1 },
-      { q: "Nhược điểm của AFS là:", opts: ["Không lưu file","Không đảm bảo nhất quán tuyệt đối","Không có client","Không có server"], ans: 1 },
-      { q: "HDFS được thiết kế nhằm:", opts: ["Xử lý trên một máy","Xử lý dữ liệu phân tán trên nhiều node","Chỉ lưu trữ","Không xử lý dữ liệu"], ans: 1 },
-      { q: "Một thành phần của HDFS là:", opts: ["CPU node","DataNode","GPU node","Web node"], ans: 1 },
-      { q: "Ưu điểm chính của hệ phân tán là:", opts: ["Không mở rộng","Khả năng mở rộng cao","Không xử lý song song","Không chia sẻ"], ans: 1 },
-      { q: "NoSQL phù hợp với dữ liệu:", opts: ["Quan hệ chặt chẽ","Phi cấu trúc hoặc bán cấu trúc","Chỉ số nguyên","Chỉ văn bản"], ans: 1 },
-      { q: "MapReduce gồm hai bước chính:", opts: ["Read & Write","Map & Reduce","Load & Save","Input & Output"], ans: 1 },
-      { q: "Một mục tiêu của HDFS là:", opts: ["Tối ưu dữ liệu nhỏ","Tăng độ tin cậy qua replication","Giảm số node","Không lưu trữ"], ans: 1 },
-      { q: "Trong hệ phân tán, dữ liệu thường:", opts: ["Tập trung một nơi","Phân tán trên nhiều node","Không lưu","Chỉ RAM"], ans: 1 },
-      { q: "GFS và HDFS đều hướng tới:", opts: ["Dữ liệu nhỏ","Dữ liệu lớn","Offline","Không mạng"], ans: 1 },
-    ],
-    hard: [
-      { q: "Tại sao HDFS không phù hợp với file nhỏ?", opts: ["Không lưu được","Overhead quản lý block lớn","Không có RAM","Không có node"], ans: 1 },
-      { q: "AFS cải thiện hiệu năng bằng cách:", opts: ["Không dùng mạng","Cache dữ liệu tại client","Xóa file","Giảm server"], ans: 1 },
-      { q: "Nhược điểm của hệ phân tán là:", opts: ["Không mở rộng","Đồng bộ và nhất quán phức tạp","Không có dữ liệu","Không có node"], ans: 1 },
-      { q: "Vai trò của DataNode trong HDFS là:", opts: ["Quản lý metadata","Lưu trữ dữ liệu","Điều phối job","Quản lý user"], ans: 1 },
-      { q: "Big Data yêu cầu:", opts: ["Một máy mạnh","Hệ thống phân tán","Không cần mạng","Không lưu trữ"], ans: 1 },
-      { q: "NoSQL không phù hợp với:", opts: ["Dữ liệu linh hoạt","Dữ liệu phi cấu trúc","Quan hệ phức tạp cần ACID chặt","Big Data"], ans: 2 },
-      { q: "Một đặc điểm quan trọng của HDFS là:", opts: ["Không fault-tolerant","Tự động phục hồi lỗi","Không replication","Không scale"], ans: 1 },
-      { q: "GFS và HDFS đều sử dụng:", opts: ["Block storage phân tán","File local","RAM only","SSD only"], ans: 0 },
-      { q: "Trong MapReduce, Reduce dùng để:", opts: ["Chia dữ liệu","Tổng hợp kết quả","Đọc file","Xóa dữ liệu"], ans: 1 },
-      { q: "Một thách thức của Big Data là:", opts: ["Dữ liệu ít","Xử lý và lưu trữ khối lượng lớn","Không có mạng","Không có thuật toán"], ans: 1 },
-    ]
-  },
-  4: {
-    name: "An toàn & Bảo mật",
-    color: "c4",
-    easy: [
-      { q: "Một vấn đề lớn trong cloud computing là:", opts: ["Thiếu CPU","Thiếu RAM","An toàn và bảo mật","Không có mạng"], ans: 2 },
-      { q: "Dữ liệu trong cloud thường được lưu ở:", opts: ["Máy cá nhân","Trung tâm dữ liệu","USB","RAM"], ans: 1 },
-      { q: "Bảo mật trong cloud nhằm mục tiêu:", opts: ["Xóa dữ liệu","Bảo vệ dữ liệu và hệ thống","Giảm hiệu năng","Không cho truy cập"], ans: 1 },
-      { q: "Một yếu tố của bảo mật là:", opts: ["Tốc độ","Tính bí mật","Màu sắc","Kích thước"], ans: 1 },
-      { q: "Người dùng lo ngại điều gì khi dùng cloud?", opts: ["Không có dữ liệu","Mất quyền kiểm soát dữ liệu","Không có phần mềm","Không có CPU"], ans: 1 },
-      { q: "Nhà cung cấp cloud có trách nhiệm:", opts: ["Không bảo mật","Bảo vệ hệ thống và dữ liệu","Xóa dữ liệu","Không quản lý"], ans: 1 },
-      { q: "Một dạng tấn công phổ biến là:", opts: ["Rendering","Truy cập trái phép","Nén dữ liệu","Backup"], ans: 1 },
-      { q: "Bảo mật truy cập thường dùng:", opts: ["Username/password","File text","CPU","GPU"], ans: 0 },
-      { q: "Dữ liệu nhạy cảm cần:", opts: ["Không bảo vệ","Mã hóa","Xóa","Copy"], ans: 1 },
-      { q: "Log hệ thống dùng để:", opts: ["Xóa dữ liệu","Theo dõi truy cập","Tăng CPU","Giảm RAM"], ans: 1 },
-    ],
-    medium: [
-      { q: "Một nguyên nhân gây rủi ro bảo mật là:", opts: ["Dữ liệu tập trung","Dữ liệu phân tán","Không có mạng","Không có user"], ans: 0 },
-      { q: "Bảo mật cloud cần đảm bảo:", opts: ["Chỉ hiệu năng","CIA (Confidentiality, Integrity, Availability)","Chỉ tốc độ","Chỉ lưu trữ"], ans: 1 },
-      { q: "Authentication dùng để:", opts: ["Mã hóa","Xác thực người dùng","Lưu trữ","Xóa dữ liệu"], ans: 1 },
-      { q: "Authorization dùng để:", opts: ["Xác định quyền truy cập","Xóa dữ liệu","Tăng tốc","Backup"], ans: 0 },
-      { q: "Một giải pháp bảo mật là:", opts: ["Không kiểm soát truy cập","Kiểm soát truy cập","Không mã hóa","Không logging"], ans: 1 },
-      { q: "Mã hóa dữ liệu giúp:", opts: ["Tăng dung lượng","Bảo vệ dữ liệu khỏi truy cập trái phép","Giảm bảo mật","Xóa dữ liệu"], ans: 1 },
-      { q: "Một vấn đề của cloud là:", opts: ["Không có log","Khó kiểm soát log","Không có dữ liệu","Không có mạng"], ans: 1 },
-      { q: "Backup dữ liệu giúp:", opts: ["Xóa dữ liệu","Khôi phục khi sự cố","Giảm bảo mật","Không lưu trữ"], ans: 1 },
-      { q: "Một cơ chế bảo mật là:", opts: ["Firewall","CPU","GPU","RAM"], ans: 0 },
-      { q: "SLA trong cloud liên quan đến:", opts: ["Thiết kế UI","Cam kết dịch vụ và bảo mật","CPU","RAM"], ans: 1 },
-    ],
-    hard: [
-      { q: "Thách thức lớn của bảo mật cloud là:", opts: ["Không có dữ liệu","Mất quyền kiểm soát hạ tầng","Không có CPU","Không có mạng"], ans: 1 },
-      { q: "Vì sao dữ liệu tập trung gây rủi ro?", opts: ["Khó lưu trữ","Trở thành mục tiêu tấn công lớn","Không truy cập được","Không có mạng"], ans: 1 },
-      { q: "Một giải pháp chống truy cập trái phép là:", opts: ["Không dùng password","Multi-factor authentication","Không login","Không lưu dữ liệu"], ans: 1 },
-      { q: "Integrity nghĩa là:", opts: ["Bảo mật dữ liệu","Toàn vẹn dữ liệu","Sẵn sàng","Truy cập"], ans: 1 },
-      { q: "Availability nghĩa là:", opts: ["Bí mật","Toàn vẹn","Sẵn sàng truy cập","Mã hóa"], ans: 2 },
-      { q: "Một rủi ro của cloud là:", opts: ["Không có dữ liệu","Phụ thuộc nhà cung cấp","Không có mạng","Không có CPU"], ans: 1 },
-      { q: "Logging quan trọng vì:", opts: ["Xóa dữ liệu","Phát hiện và truy vết sự cố","Tăng RAM","Giảm CPU"], ans: 1 },
-      { q: "Một kiến trúc bảo mật tốt cần:", opts: ["Không phân quyền","Phân lớp bảo mật","Không mã hóa","Không backup"], ans: 1 },
-      { q: "Dữ liệu khi truyền qua mạng cần:", opts: ["Không bảo vệ","Mã hóa (encryption in transit)","Xóa","Copy"], ans: 1 },
-      { q: "Một hạn chế của bảo mật cloud là:", opts: ["Không có giải pháp","Khó kiểm soát hoàn toàn bởi người dùng","Không có dữ liệu","Không có mạng"], ans: 1 },
-    ]
-  },
-  5: {
-    name: "Sử dụng Dịch vụ",
-    color: "c5",
-    easy: [
-      { q: "SaaS là viết tắt của:", opts: ["Software as a Service","Storage as a System","Server as a Software","Service as a Software"], ans: 0 },
-      { q: "PaaS là viết tắt của:", opts: ["Platform as a Service","Program as a Service","Processing as a System","Platform and Software"], ans: 0 },
-      { q: "IaaS là viết tắt của:", opts: ["Infrastructure as a Service","Internet as a Service","Internal as a System","Interface as a Service"], ans: 0 },
-      { q: "SaaS cung cấp cho người dùng:", opts: ["Phần cứng","Phần mềm hoàn chỉnh","CPU","RAM"], ans: 1 },
-      { q: "PaaS cung cấp:", opts: ["Hệ điều hành và môi trường phát triển","Chỉ phần mềm","Chỉ dữ liệu","Không cung cấp gì"], ans: 0 },
-      { q: "IaaS cung cấp:", opts: ["Ứng dụng hoàn chỉnh","Hạ tầng như máy chủ, lưu trữ","Chỉ database","Chỉ web"], ans: 1 },
-      { q: "Người dùng SaaS thường:", opts: ["Phải cài đặt hệ điều hành","Chỉ sử dụng ứng dụng qua web","Quản lý server","Viết driver"], ans: 1 },
-      { q: "Ví dụ SaaS là:", opts: ["Google Docs","CPU","RAM","BIOS"], ans: 0 },
-      { q: "Ví dụ IaaS là:", opts: ["Máy ảo","File text","Word","Excel offline"], ans: 0 },
-      { q: "Người dùng PaaS thường là:", opts: ["Người dùng cuối","Lập trình viên","Người bán hàng","Người không dùng máy tính"], ans: 1 },
-    ],
-    medium: [
-      { q: "Điểm khác biệt chính giữa SaaS và PaaS là:", opts: ["SaaS cung cấp nền tảng","SaaS cung cấp ứng dụng hoàn chỉnh","PaaS không có dịch vụ","SaaS không có phần mềm"], ans: 1 },
-      { q: "PaaS giúp lập trình viên:", opts: ["Không cần viết code","Phát triển ứng dụng nhanh hơn","Không cần server","Không cần dữ liệu"], ans: 1 },
-      { q: "IaaS cho phép người dùng:", opts: ["Không quản lý gì","Tự cấu hình máy ảo","Không truy cập","Không cài OS"], ans: 1 },
-      { q: "Trong IaaS, người dùng chịu trách nhiệm:", opts: ["Hạ tầng vật lý","Hệ điều hành và ứng dụng","Không gì","Chỉ mạng"], ans: 1 },
-      { q: "SaaS giảm chi phí vì:", opts: ["Không dùng phần mềm","Không cần cài đặt và bảo trì","Không có mạng","Không có dữ liệu"], ans: 1 },
-      { q: "PaaS phù hợp với:", opts: ["Người không biết lập trình","Nhà phát triển phần mềm","Người dùng cá nhân","Không ai dùng"], ans: 1 },
-      { q: "IaaS có tính linh hoạt vì:", opts: ["Không cấu hình được","Tùy chỉnh tài nguyên theo nhu cầu","Không mở rộng","Không truy cập"], ans: 1 },
-      { q: "SaaS hoạt động chủ yếu qua:", opts: ["USB","Internet","CPU","RAM"], ans: 1 },
-      { q: "Một lợi ích của PaaS là:", opts: ["Không cần platform","Giảm thời gian phát triển","Không cần code","Không có database"], ans: 1 },
-      { q: "IaaS thường dùng trong:", opts: ["Game offline","Triển khai server","Soạn thảo văn bản","Vẽ hình"], ans: 1 },
-    ],
-    hard: [
-      { q: "Sự khác biệt chính giữa IaaS và PaaS là:", opts: ["IaaS không có server","PaaS trừu tượng hóa hạ tầng nhiều hơn","IaaS cung cấp ứng dụng","PaaS không có nền tảng"], ans: 1 },
-      { q: "Trong SaaS, người dùng KHÔNG cần:", opts: ["Internet","Trình duyệt","Quản lý hạ tầng","Dữ liệu"], ans: 2 },
-      { q: "PaaS giúp giảm độ phức tạp bằng cách:", opts: ["Xóa code","Ẩn quản lý hạ tầng","Xóa database","Xóa network"], ans: 1 },
-      { q: "IaaS phù hợp khi:", opts: ["Chỉ cần dùng ứng dụng","Cần kiểm soát hệ thống","Không cần server","Không có dữ liệu"], ans: 1 },
-      { q: "SaaS có hạn chế là:", opts: ["Không dùng Internet","Ít tùy chỉnh","Không có phần mềm","Không có user"], ans: 1 },
-      { q: "PaaS thường cung cấp:", opts: ["OS, middleware, runtime","CPU vật lý","RAM vật lý","BIOS"], ans: 0 },
-      { q: "IaaS yêu cầu người dùng có kiến thức:", opts: ["Thiết kế UI","Quản trị hệ thống","Vẽ hình","Word"], ans: 1 },
-      { q: "Một ví dụ điển hình của PaaS là:", opts: ["Google App Engine","RAM","CPU","BIOS"], ans: 0 },
-      { q: "Sự phân tầng dịch vụ cloud giúp:", opts: ["Giảm phân loại","Phân chia trách nhiệm rõ ràng","Không có lợi","Không dùng được"], ans: 1 },
-      { q: "Trong mô hình cloud, mức độ kiểm soát giảm dần theo thứ tự:", opts: ["SaaS → PaaS → IaaS","IaaS → PaaS → SaaS","PaaS → SaaS → IaaS","Không xác định"], ans: 1 },
-    ]
-  }
-};
-
-const CHAPTER_COLORS = { 1: '#58a6ff', 2: '#3fb950', 3: '#f97316', 4: '#f85149', 5: '#8b5cf6' };
-const CHAPTER_NAMES_SHORT = { 1: 'Chương MĐ', 2: 'Chương 2', 3: 'Chương 3', 4: 'Chương 4', 5: 'Chương 5' };
-const DIFF_NAMES = { easy: 'Dễ', medium: 'Trung bình', hard: 'Khó' };
-
-let quiz = [];
-let userAnswers = [];
-let marked = [];
-let currentQ = 0;
-let timerInterval = null;
-let secondsLeft = 60 * 60;
-let isReviewMode = false;
-
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-function buildQuiz() {
-  quiz = [];
-  [1, 2, 3, 4, 5].forEach(ch => {
-    const bank = QUESTION_BANK[ch];
-    const easyPool = shuffle(bank.easy);
-    const medPool = shuffle(bank.medium);
-    const hardPool = shuffle(bank.hard);
-    const selected = [
-      ...easyPool.slice(0, 3).map(q => ({ ...q, chapter: ch, diff: 'easy' })),
-      ...medPool.slice(0, 3).map(q => ({ ...q, chapter: ch, diff: 'medium' })),
-      ...hardPool.slice(0, 2).map(q => ({ ...q, chapter: ch, diff: 'hard' })),
-    ];
-    selected.forEach(q => {
-      // Shuffle options and track correct answer
-      const opts = q.opts.map((o, i) => ({ text: o, isCorrect: i === q.ans }));
-      const shuffled = shuffle(opts);
-      q.displayOpts = shuffled.map(o => o.text);
-      q.correctIdx = shuffled.findIndex(o => o.isCorrect);
-    });
-    quiz.push(...shuffle(selected));
-  });
-  // Shuffle all 40 questions across chapters but keep chapter grouping in nav
-  // Actually shuffle globally for the quiz order
-  quiz = shuffle(quiz);
-  userAnswers = new Array(40).fill(null);
-  marked = new Array(40).fill(false);
-  currentQ = 0;
-}
-
-function startQuiz() {
-  buildQuiz();
-  document.getElementById('intro-screen').style.display = 'none';
-  document.getElementById('quiz-screen').style.display = 'block';
-  isReviewMode = false;
-  secondsLeft = 60 * 60;
-  startTimer();
-  renderNavPanel();
-  renderQuestion();
-}
-
-function startTimer() {
-  clearInterval(timerInterval);
-  timerInterval = setInterval(() => {
-    secondsLeft--;
-    updateTimerDisplay();
-    document.getElementById('sum-remain').textContent = formatTime(secondsLeft);
-    if (secondsLeft <= 0) {
-      clearInterval(timerInterval);
-      submitQuiz();
-    }
-  }, 1000);
-}
-
-function formatTime(s) {
-  const m = Math.floor(s / 60);
-  const sec = s % 60;
-  return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
-}
-
-function updateTimerDisplay() {
-  const el = document.getElementById('timer-text');
-  const timerEl = document.getElementById('timer');
-  el.textContent = formatTime(secondsLeft);
-  if (secondsLeft < 300) timerEl.classList.add('warning');
-  else timerEl.classList.remove('warning');
-}
-
-function renderQuestion() {
-  const q = quiz[currentQ];
-  document.getElementById('q-num').textContent = `Câu ${currentQ + 1} / 40`;
-
-  const chBadge = document.getElementById('q-chapter-badge');
-  chBadge.textContent = CHAPTER_NAMES_SHORT[q.chapter];
-  chBadge.className = 'q-chapter-badge ' + QUESTION_BANK[q.chapter].color;
-  chBadge.style.color = CHAPTER_COLORS[q.chapter];
-  chBadge.style.borderColor = CHAPTER_COLORS[q.chapter] + '55';
-  chBadge.style.background = CHAPTER_COLORS[q.chapter] + '15';
-
-  document.getElementById('q-diff-badge').textContent = DIFF_NAMES[q.diff];
-  document.getElementById('question-text').textContent = q.q;
-
-  const markBtn = document.getElementById('q-mark-btn');
-  if (marked[currentQ]) {
-    markBtn.classList.add('marked');
-    markBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M5 3l14 9-14 9V3z"/></svg> Đã đánh dấu`;
-  } else {
-    markBtn.classList.remove('marked');
-    markBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M5 3l14 9-14 9V3z"/></svg> Đánh dấu`;
-  }
-
-  const answersList = document.getElementById('answers-list');
-  answersList.innerHTML = '';
-  q.displayOpts.forEach((opt, i) => {
-    const div = document.createElement('div');
-    div.className = 'answer-option';
-
-    if (isReviewMode) {
-      div.classList.add('disabled');
-      if (i === q.correctIdx) div.classList.add('correct');
-      else if (userAnswers[currentQ] === i) div.classList.add('wrong');
-    } else {
-      if (userAnswers[currentQ] === i) div.classList.add('selected');
-      div.onclick = () => selectAnswer(i);
-    }
-
-    div.innerHTML = `
-      <div class="answer-key">${['A','B','C','D'][i]}</div>
-      <div class="answer-text">${opt}</div>
-    `;
-    answersList.appendChild(div);
-  });
-
-  document.getElementById('btn-prev').disabled = currentQ === 0;
-  document.getElementById('btn-next').disabled = currentQ === 39;
-
-  updateProgress();
-  updateNavPanel();
-}
-
-function selectAnswer(idx) {
-  userAnswers[currentQ] = idx;
-  renderQuestion();
-}
-
-function toggleMark() {
-  marked[currentQ] = !marked[currentQ];
-  renderQuestion();
-  updateNavPanel();
-}
-
-function navigate(dir) {
-  currentQ = Math.max(0, Math.min(39, currentQ + dir));
-  renderQuestion();
-}
-
-function goToQuestion(idx) {
-  currentQ = idx;
-  renderQuestion();
-}
-
-function updateProgress() {
-  const answered = userAnswers.filter(a => a !== null).length;
-  document.getElementById('progress-text').textContent = `${answered} / 40 câu đã trả lời`;
-  document.getElementById('progress-pct').textContent = `${Math.round(answered/40*100)}%`;
-  document.getElementById('progress-fill').style.width = `${answered/40*100}%`;
-  document.getElementById('sum-answered').textContent = answered;
-  document.getElementById('sum-unanswered').textContent = 40 - answered;
-  document.getElementById('sum-marked').textContent = marked.filter(Boolean).length;
-}
-
-function renderNavPanel() {
-  const buttons = quiz.map((q, i) => {
-    return `<button class="nav-btn" id="nav-btn-${i}" onclick="goToQuestion(${i})">${i+1}</button>`;
-  }).join('');
-  document.getElementById('nav-chapters').innerHTML = `<div class="nav-grid">${buttons}</div>`;
-}
-
-function updateNavPanel() {
-  quiz.forEach((q, i) => {
-    const btn = document.getElementById(`nav-btn-${i}`);
-    if (!btn) return;
-    btn.className = 'nav-btn';
-    
-    if (isReviewMode) {
-      if (i === currentQ) btn.classList.add('current');
-      if (userAnswers[i] === q.correctIdx) {
-        btn.classList.add('correct-nav');
-      } else if (userAnswers[i] !== null) {
-        btn.classList.add('wrong-nav');
-      } else {
-        // Not answered but in review mode is effectively wrong
-        btn.classList.add('wrong-nav');
-      }
-    } else {
-      if (i === currentQ) btn.classList.add('current');
-      else if (marked[i]) btn.classList.add('marked');
-      else if (userAnswers[i] !== null) btn.classList.add('answered');
-    }
-  });
-}
-
-function confirmSubmit() {
-  const answered = userAnswers.filter(a => a !== null).length;
-  const unanswered = 40 - answered;
-  if (unanswered > 0) {
-    if (!confirm(`Bạn còn ${unanswered} câu chưa trả lời. Bạn có chắc muốn nộp bài?`)) return;
-  }
-  submitQuiz();
-}
-
-function submitQuiz() {
-  clearInterval(timerInterval);
-  let correct = 0;
-  quiz.forEach((q, i) => {
-    if (userAnswers[i] === q.correctIdx) correct++;
-  });
-
-  document.getElementById('quiz-screen').style.display = 'none';
-  document.getElementById('result-screen').style.display = 'block';
-  showResult(correct);
-}
-
-function showResult(correct) {
-  const score = (correct / 40 * 10).toFixed(1);
-  const pct = Math.round(correct / 40 * 100);
-
-  document.getElementById('score-big').textContent = score;
-  document.getElementById('rs-correct').textContent = correct;
-  document.getElementById('rs-wrong').textContent = userAnswers.filter((a,i) => a !== null && a !== quiz[i].correctIdx).length;
-  document.getElementById('rs-skip').textContent = userAnswers.filter(a => a === null).length;
-  document.getElementById('rs-pct').textContent = pct + '%';
-
-  const gradeEl = document.getElementById('result-grade');
-  const msgEl = document.getElementById('result-msg');
-  const circleEl = document.getElementById('score-circle');
-
-  const scoreNum = parseFloat(score);
-  const circumference = 502.65;
-  const offset = circumference - (correct / 40) * circumference;
-  setTimeout(() => circleEl.style.strokeDashoffset = offset, 300);
-
-  if (scoreNum >= 9) {
-    gradeEl.textContent = '🏆 Xuất sắc!'; gradeEl.style.color = '#f59e0b';
-    msgEl.textContent = 'Bạn nắm vững kiến thức điện toán đám mây rất tốt!';
-  } else if (scoreNum >= 8) {
-    gradeEl.textContent = '🎯 Giỏi!'; gradeEl.style.color = '#3fb950';
-    msgEl.textContent = 'Kết quả rất tốt! Hãy ôn lại những câu còn sai.';
-  } else if (scoreNum >= 6.5) {
-    gradeEl.textContent = '👍 Khá!'; gradeEl.style.color = '#58a6ff';
-    msgEl.textContent = 'Kết quả khá. Còn nhiều chỗ có thể cải thiện thêm.';
-  } else if (scoreNum >= 5) {
-    gradeEl.textContent = '📚 Trung bình'; gradeEl.style.color = '#d29922';
-    msgEl.textContent = 'Cần ôn tập thêm để nắm chắc kiến thức.';
-  } else {
-    gradeEl.textContent = '💪 Cần cố gắng'; gradeEl.style.color = '#f85149';
-    msgEl.textContent = 'Hãy xem lại lý thuyết và làm bài luyện tập thêm nhé!';
-  }
-
-  // Chapter breakdown
-  const chapterResultsHtml = [1,2,3,4,5].map(ch => {
-    const chQ = quiz.map((q,i) => ({ q, i })).filter(({q}) => q.chapter === ch);
-    const chCorrect = chQ.filter(({q,i}) => userAnswers[i] === q.correctIdx).length;
-    const pct = Math.round(chCorrect / 8 * 100);
-    const color = CHAPTER_COLORS[ch];
-    return `
-      <div class="chapter-result-row">
-        <div class="chapter-result-name" style="color:${color}">${QUESTION_BANK[ch].name}</div>
-        <div class="chapter-result-bar-wrap">
-          <div class="chapter-result-bar" style="width:0%;background:${color}" data-pct="${pct}"></div>
-        </div>
-        <div class="chapter-result-score">${chCorrect}/8</div>
-      </div>
-    `;
-  }).join('');
-  document.getElementById('chapter-results-body').innerHTML = chapterResultsHtml;
-  setTimeout(() => {
-    document.querySelectorAll('.chapter-result-bar').forEach(bar => {
-      bar.style.width = bar.dataset.pct + '%';
-    });
-  }, 400);
-}
-
-function retryQuiz() {
-  document.getElementById('result-screen').style.display = 'none';
-  startQuiz();
-}
-
-function showReview() {
-  isReviewMode = true;
-  document.getElementById('result-screen').style.display = 'none';
-  document.getElementById('quiz-screen').style.display = 'block';
-  document.getElementById('btn-submit').textContent = '← Kết quả';
-  document.getElementById('btn-submit').onclick = () => {
-    document.getElementById('quiz-screen').style.display = 'none';
-    document.getElementById('result-screen').style.display = 'block';
-  };
-  // Find first wrong/unanswered question
-  const firstWrong = quiz.findIndex((q, i) => userAnswers[i] !== q.correctIdx);
-  currentQ = firstWrong >= 0 ? firstWrong : 0;
-  renderNavPanel();
-  updateNavPanel();
-  renderQuestion();
-}
-</script>
+<script src="js/data.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/ui.js"></script>
 </body>
 </html>
